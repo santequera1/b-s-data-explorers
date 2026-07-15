@@ -1,24 +1,193 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { BuMascot } from "@/components/BuMascot";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  component: LandingPage,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+type Stop = {
+  n: string;
+  title: string;
+  subtitle: string;
+  icon: string;
+};
+
+const stops: Stop[] = [
+  { n: "0", title: "Diagnóstico", subtitle: "¿Cuánto sabes ya?", icon: "🧭" },
+  { n: "1", title: "¿Qué es un dato?", subtitle: "Recolectar información", icon: "🔎" },
+  { n: "2", title: "Organizar datos", subtitle: "Tablas de conteo", icon: "📋" },
+  { n: "3", title: "Pictogramas", subtitle: "Contar con dibujos", icon: "🖼️" },
+  { n: "4", title: "Gráficos de barras", subtitle: "¡Qué barra tan alta!", icon: "📊" },
+  { n: "5", title: "¿Seguro o imposible?", subtitle: "Certeza y posibilidad", icon: "⚖️" },
+  { n: "6", title: "Cara o Sello", subtitle: "El gran experimento del azar", icon: "🪙" },
+  { n: "7", title: "La ruleta de la suerte", subtitle: "Probabilidad", icon: "🎡" },
+  { n: "8", title: "Proyecto final", subtitle: "¡Serás Explorador!", icon: "🏆" },
+];
+
+function LandingPage() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <main className="bg-paper min-h-screen">
+      {/* HERO */}
+      <section className="relative overflow-hidden">
+        <div className="mx-auto max-w-6xl px-6 pt-10 pb-16 md:pt-16 md:pb-24 grid md:grid-cols-2 gap-8 items-center">
+          <div>
+            <span className="inline-flex items-center gap-2 rounded-full bg-white/70 backdrop-blur px-4 py-1.5 text-sm font-semibold text-institutional border border-institutional/15">
+              <span>🦉</span> Colegio Ciudad de Tunja · 3° primaria
+            </span>
+            <h1 className="mt-5 text-5xl md:text-7xl font-display font-bold text-institutional-deep leading-[1.02]">
+              Exploradores <br /> de <span className="text-coral">Datos</span>
+            </h1>
+            <p className="mt-5 text-lg md:text-xl text-muted-foreground max-w-xl">
+              Un viaje de 8 semanas para aprender <strong>estadística jugando</strong> junto a
+              Bú, la búho exploradora. Recoge pistas, organiza datos y descubre el azar.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a href="#mapa" className="btn-primary">
+                Comenzar la aventura
+                <span aria-hidden>→</span>
+              </a>
+              <Link to="/semana-6" className="btn-secondary">
+                Probar demo: Semana 6
+              </Link>
+            </div>
+          </div>
+
+          <div className="relative flex justify-center">
+            <div className="absolute -inset-6 rounded-[3rem] bg-gradient-to-br from-turquoise/25 via-gold/20 to-coral/20 blur-2xl" />
+            <div className="relative animate-float">
+              <BuMascot eager className="w-72 md:w-96 h-auto drop-shadow-2xl" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* QUÉ ES */}
+      <section className="mx-auto max-w-4xl px-6 py-16 text-center">
+        <h2 className="text-3xl md:text-4xl font-display font-bold text-institutional-deep">
+          Un curso para curiosos
+        </h2>
+        <p className="mt-4 text-lg text-muted-foreground">
+          Exploradores de Datos convierte el <em>pensamiento aleatorio</em> del MEN en una
+          aventura ilustrada. Cada semana, Bú propone un pequeño reto con animaciones,
+          juegos y experimentos — para que los niños aprendan matemáticas descubriéndolas,
+          no memorizándolas.
+        </p>
+      </section>
+
+      {/* MAPA DE LA AVENTURA */}
+      <section id="mapa" className="mx-auto max-w-6xl px-6 py-12">
+        <div className="text-center mb-12">
+          <p className="text-sm font-semibold tracking-widest uppercase text-turquoise">
+            El mapa de la aventura
+          </p>
+          <h2 className="mt-2 text-3xl md:text-4xl font-display font-bold text-institutional-deep">
+            8 semanas, 8 descubrimientos
+          </h2>
+        </div>
+
+        <ol className="relative grid gap-6 md:grid-cols-3">
+          {stops.map((s, i) => (
+            <li
+              key={s.n}
+              className="card-soft p-6 relative group hover:-translate-y-1 transition-transform"
+              style={{ transform: `rotate(${(i % 3) - 1}deg)` }}
+            >
+              <div className="flex items-start gap-4">
+                <div className="shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-institutional to-turquoise text-white grid place-items-center text-2xl shadow-lg">
+                  {s.icon}
+                </div>
+                <div>
+                  <div className="text-xs font-bold tracking-wider text-coral uppercase">
+                    {s.n === "0" ? "Inicio" : s.n === "8" ? "Meta" : `Semana ${s.n}`}
+                  </div>
+                  <h3 className="mt-1 font-display font-bold text-lg text-institutional-deep leading-tight">
+                    {s.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground mt-1">{s.subtitle}</p>
+                </div>
+              </div>
+              {s.n === "6" && (
+                <Link
+                  to="/semana-6"
+                  className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-coral hover:underline"
+                >
+                  🎮 Jugar demo →
+                </Link>
+              )}
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {/* CÓMO FUNCIONA */}
+      <section className="mx-auto max-w-6xl px-6 py-20">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-display font-bold text-institutional-deep">
+            ¿Cómo funciona?
+          </h2>
+        </div>
+        <div className="grid gap-6 md:grid-cols-3">
+          {[
+            { icon: "🔑", title: "Entra a Moodle", body: "Con tu usuario del colegio, abres tu aula virtual." },
+            { icon: "🗺️", title: "Descubre cada semana", body: "Bú te acompaña en un reto nuevo lleno de juegos." },
+            { icon: "🏅", title: "Gana tu insignia", body: "Al terminar te conviertes en un Explorador de Datos." },
+          ].map((step, i) => (
+            <div key={i} className="card-soft p-8 text-center">
+              <div className="mx-auto w-16 h-16 rounded-full bg-gold/30 grid place-items-center text-3xl">
+                {step.icon}
+              </div>
+              <div className="mt-3 text-xs font-bold tracking-widest text-turquoise uppercase">
+                Paso {i + 1}
+              </div>
+              <h3 className="font-display font-bold text-xl mt-1 text-institutional-deep">{step.title}</h3>
+              <p className="mt-2 text-muted-foreground">{step.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* DOCENTES */}
+      <section className="mx-auto max-w-5xl px-6 py-16">
+        <div className="card-soft p-8 md:p-12 bg-gradient-to-br from-institutional to-institutional-deep text-white">
+          <div className="grid md:grid-cols-[1fr_auto] gap-6 items-center">
+            <div>
+              <p className="text-sm font-semibold tracking-widest uppercase text-gold">
+                Para docentes y colegio
+              </p>
+              <h2 className="mt-2 text-2xl md:text-3xl font-display font-bold">
+                Institución Educativa Ciudad de Tunja
+              </h2>
+              <p className="mt-3 text-white/85 max-w-2xl">
+                Recurso digital diseñado para grado <strong>3° de primaria</strong>, alineado a
+                los Estándares Básicos de Competencias del MEN en <em>pensamiento aleatorio</em>.
+                Pensado para integrarse a Moodle: la plataforma administra login y seguimiento;
+                Exploradores de Datos entrega la experiencia interactiva.
+              </p>
+            </div>
+            <div className="text-6xl md:text-7xl">🦉</div>
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="border-t border-border/60">
+        <div className="mx-auto max-w-6xl px-6 py-10 grid md:grid-cols-3 gap-6 text-sm text-muted-foreground">
+          <div>
+            <div className="font-display font-bold text-institutional-deep text-lg">
+              Exploradores de Datos
+            </div>
+            <p className="mt-1">Guiado por Bú, la búho exploradora.</p>
+          </div>
+          <div>
+            <div className="font-semibold text-foreground">Institución</div>
+            <p>Colegio Ciudad de Tunja · Cartagena de Indias, Colombia · 2026</p>
+          </div>
+          <div>
+            <div className="font-semibold text-foreground">Contacto</div>
+            <p>Prof. Alexis Cogollo Orozco</p>
+          </div>
+        </div>
+      </footer>
+    </main>
   );
 }

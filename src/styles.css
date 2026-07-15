@@ -120,8 +120,6 @@
   box-shadow: 0 6px 0 0 color-mix(in oklab, var(--coral-deep) 70%, black),
               0 12px 24px -8px color-mix(in oklab, var(--coral-deep) 50%, transparent);
   transition: transform 150ms ease, box-shadow 150ms ease;
-}
-@utility btn-primary {
   &:hover { transform: translateY(-1px); }
   &:active {
     transform: translateY(3px);
@@ -143,8 +141,6 @@
   font-family: var(--font-display);
   font-weight: 600;
   transition: transform 150ms ease, background 150ms ease;
-}
-@utility btn-secondary {
   &:hover { background: var(--institutional); color: white; }
 }
 

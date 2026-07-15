@@ -9,8 +9,14 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as Semana6RouteImport } from './routes/semana-6'
 import { Route as IndexRouteImport } from './routes/index'
 
+const Semana6Route = Semana6RouteImport.update({
+  id: '/semana-6',
+  path: '/semana-6',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +25,39 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/semana-6': typeof Semana6Route
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/semana-6': typeof Semana6Route
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/semana-6': typeof Semana6Route
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/semana-6'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/semana-6'
+  id: '__root__' | '/' | '/semana-6'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  Semana6Route: typeof Semana6Route
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/semana-6': {
+      id: '/semana-6'
+      path: '/semana-6'
+      fullPath: '/semana-6'
+      preLoaderRoute: typeof Semana6RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +70,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  Semana6Route: Semana6Route,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

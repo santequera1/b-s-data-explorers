@@ -361,9 +361,9 @@ function ResultPhase({
         <button onClick={onReset} className="btn-primary">
           🔄 Jugar de nuevo
         </button>
-        <button className="btn-secondary" disabled>
-          Volver al mapa de Moodle
-        </button>
+        <a href="/semana-7" className="btn-secondary">
+          Siguiente juego: La Ruleta 🎡
+        </a>
       </div>
     </div>
   );

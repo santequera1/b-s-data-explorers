@@ -1,32 +1,32 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { CoinExperiment } from "@/components/CoinExperiment";
+import { RouletteExperiment } from "@/components/RouletteExperiment";
 
 type Search = { nombre?: string };
 
-export const Route = createFileRoute("/semana-6")({
+export const Route = createFileRoute("/semana-7")({
   validateSearch: (search: Record<string, unknown>): Search => ({
     nombre: typeof search.nombre === "string" ? search.nombre : undefined,
   }),
   head: () => ({
     meta: [
-      { title: "Semana 6 · Cara o Sello — Exploradores de Datos" },
+      { title: "Semana 7 · La Ruleta de la Suerte — Exploradores de Datos" },
       {
         name: "description",
         content:
-          "El gran experimento del azar: lanza la moneda 10 veces con Bú y descubre cómo funciona la probabilidad.",
+          "Gira la ruleta de colores con Bú y descubre por qué algunos resultados son más probables que otros.",
       },
-      { property: "og:title", content: "Semana 6 · Cara o Sello" },
+      { property: "og:title", content: "Semana 7 · La Ruleta de la Suerte" },
       {
         property: "og:description",
         content: "Módulo interactivo de probabilidad para 3° de primaria.",
       },
     ],
   }),
-  component: Semana6,
+  component: Semana7,
 });
 
-function Semana6() {
+function Semana7() {
   const { nombre } = Route.useSearch();
   const [soundOn, setSoundOn] = useState(true);
 
@@ -50,18 +50,18 @@ function Semana6() {
 
       <section className="mx-auto max-w-5xl px-6 pb-4 text-center">
         <div className="text-xs font-bold tracking-widest uppercase text-coral">
-          Semana 6
+          Semana 7
         </div>
         <h1 className="mt-2 text-3xl md:text-5xl font-display font-bold text-institutional-deep">
-          Cara o Sello
+          La Ruleta de la Suerte
         </h1>
         <p className="mt-2 text-lg text-muted-foreground">
-          El gran experimento del azar 🪙
+          ¿Qué color es más probable? 🎡
         </p>
       </section>
 
       <section className="px-4 md:px-6 pb-16">
-        <CoinExperiment playerName={nombre} soundOn={soundOn} />
+        <RouletteExperiment playerName={nombre} soundOn={soundOn} />
       </section>
     </main>
   );

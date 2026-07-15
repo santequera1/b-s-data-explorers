@@ -83,19 +83,38 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Aventura de 8 semanas para niños de 3° de primaria: aprende pensamiento aleatorio y estadística jugando con Bú, la búho exploradora. Colegio Ciudad de Tunja.",
       },
-      { name: "author", content: "Colegio Ciudad de Tunja" },
-      { property: "og:title", content: "Exploradores de Datos" },
+      { name: "author", content: "Institución Educativa Ciudad de Tunja" },
+      { property: "og:title", content: "Exploradores de Datos · Aprende estadística jugando" },
       {
         property: "og:description",
         content:
-          "Aventura interactiva para aprender estadística en 3° de primaria, alineada al MEN de Colombia.",
+          "Aventura interactiva para aprender estadística en 3° de primaria junto a Bú, la búho exploradora. Institución Educativa Ciudad de Tunja, Cartagena.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://ava.ieciudaddetunja.com/" },
+      { property: "og:site_name", content: "Exploradores de Datos" },
+      { property: "og:locale", content: "es_CO" },
+      { property: "og:image", content: "https://ava.ieciudaddetunja.com/og-image.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      {
+        property: "og:image:alt",
+        content: "Bú, la búho exploradora, invita a aprender estadística jugando",
+      },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Exploradores de Datos · Aprende estadística jugando" },
+      {
+        name: "twitter:description",
+        content:
+          "Aventura interactiva de estadística para 3° de primaria. Institución Educativa Ciudad de Tunja.",
+      },
+      { name: "twitter:image", content: "https://ava.ieciudaddetunja.com/og-image.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.ico", sizes: "any" },
+      { rel: "icon", href: "/favicon.png", type: "image/png", sizes: "64x64" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -112,7 +131,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="es">
       <head>
         <HeadContent />
       </head>

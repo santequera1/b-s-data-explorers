@@ -9,12 +9,24 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as Semana7RouteImport } from './routes/semana-7'
 import { Route as Semana6RouteImport } from './routes/semana-6'
+import { Route as JuegosRouteImport } from './routes/juegos'
 import { Route as IndexRouteImport } from './routes/index'
 
+const Semana7Route = Semana7RouteImport.update({
+  id: '/semana-7',
+  path: '/semana-7',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Semana6Route = Semana6RouteImport.update({
   id: '/semana-6',
   path: '/semana-6',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JuegosRoute = JuegosRouteImport.update({
+  id: '/juegos',
+  path: '/juegos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -25,37 +37,59 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/juegos': typeof JuegosRoute
   '/semana-6': typeof Semana6Route
+  '/semana-7': typeof Semana7Route
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/juegos': typeof JuegosRoute
   '/semana-6': typeof Semana6Route
+  '/semana-7': typeof Semana7Route
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/juegos': typeof JuegosRoute
   '/semana-6': typeof Semana6Route
+  '/semana-7': typeof Semana7Route
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/semana-6'
+  fullPaths: '/' | '/juegos' | '/semana-6' | '/semana-7'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/semana-6'
-  id: '__root__' | '/' | '/semana-6'
+  to: '/' | '/juegos' | '/semana-6' | '/semana-7'
+  id: '__root__' | '/' | '/juegos' | '/semana-6' | '/semana-7'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  JuegosRoute: typeof JuegosRoute
   Semana6Route: typeof Semana6Route
+  Semana7Route: typeof Semana7Route
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/semana-7': {
+      id: '/semana-7'
+      path: '/semana-7'
+      fullPath: '/semana-7'
+      preLoaderRoute: typeof Semana7RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/semana-6': {
       id: '/semana-6'
       path: '/semana-6'
       fullPath: '/semana-6'
       preLoaderRoute: typeof Semana6RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/juegos': {
+      id: '/juegos'
+      path: '/juegos'
+      fullPath: '/juegos'
+      preLoaderRoute: typeof JuegosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -70,8 +104,20 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  JuegosRoute: JuegosRoute,
   Semana6Route: Semana6Route,
+  Semana7Route: Semana7Route,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

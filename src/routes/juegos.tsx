@@ -4,79 +4,92 @@ import { BuMascot } from "@/components/BuMascot";
 export const Route = createFileRoute("/juegos")({
   head: () => ({
     meta: [
-      { title: "Zona de Juegos — Exploradores de Datos" },
+      { title: "Módulos y Juegos — Exploradores de Datos" },
       {
         name: "description",
         content:
-          "La zona interactiva de Exploradores de Datos: juegos de estadística y probabilidad para 3° de primaria.",
+          "La zona interactiva del AVA: 3 módulos semanales con misiones de estadística y retos de probabilidad para 3° de primaria.",
       },
     ],
   }),
   component: GamesPage,
 });
 
-type Game = {
+type ModuleCard = {
   week: string;
   title: string;
+  mission: string;
   description: string;
   icon: string;
-  to?: "/semana-6" | "/semana-7";
+  to: "/modulo-1" | "/modulo-2" | "/modulo-3";
+  dba: string;
   skills: string[];
 };
 
-const games: Game[] = [
+const modules: ModuleCard[] = [
   {
-    week: "Semana 6",
-    title: "Cara o Sello",
+    week: "Semana 1 · Módulo 1",
+    title: "¿Qué es un dato?",
+    mission: "Misión: El Dilema de la Fruta",
     description:
-      "Predice, lanza la moneda 10 veces y compara tu predicción con lo que pasó de verdad. ¿Qué tan predecible es el azar?",
-    icon: "🪙",
-    to: "/semana-6",
-    skills: ["Predicción", "Conteo", "Gráfico de barras"],
+      "Encuesta a 12 amigos, registra cada dato con palotes y arma tu primera tabla de frecuencia para resolver el dilema de la profe.",
+    icon: "🥭",
+    to: "/modulo-1",
+    dba: "DBA 10",
+    skills: ["Recolección de datos", "Conteo", "Tabla de frecuencia"],
   },
   {
-    week: "Semana 7",
+    week: "Semana 2 · Módulo 2",
+    title: "Tablas de frecuencia y gráficos",
+    mission: "Misión: Consultoría en la Tienda Escolar",
+    description:
+      "Conviértete en consultor de doña Marta: construye el gráfico de barras y el pictograma con escala de las ventas de bolis, fritos y mangos.",
+    icon: "🏪",
+    to: "/modulo-2",
+    dba: "DBA 10",
+    skills: ["Gráfico de barras", "Pictograma con escala", "Interpretación"],
+  },
+  {
+    week: "Semana 3 · Módulo 3",
+    title: "La moda",
+    mission: "Misión: El Jugo Estrella",
+    description:
+      "Cuenta los votos del salón, encuentra el dato que más se repite y corona al Jugo Estrella del kiosco del recreo.",
+    icon: "🧃",
+    to: "/modulo-3",
+    dba: "DBA 10",
+    skills: ["La moda", "Análisis de gráficas", "Decisiones con datos"],
+  },
+];
+
+type AzarCard = {
+  title: string;
+  description: string;
+  icon: string;
+  to: "/semana-6" | "/semana-7";
+  skills: string[];
+};
+
+const retosAzar: AzarCard[] = [
+  {
+    title: "Cara o Sello",
+    description:
+      "Predice, lanza la moneda 10 veces y compara tu predicción con lo que pasó de verdad.",
+    icon: "🪙",
+    to: "/semana-6",
+    skills: ["Predicción", "Experimento aleatorio"],
+  },
+  {
     title: "La Ruleta de la Suerte",
     description:
       "Gira la ruleta de colores y descubre por qué algunos resultados son más probables que otros.",
     icon: "🎡",
     to: "/semana-7",
-    skills: ["Probabilidad", "Más y menos probable"],
-  },
-  {
-    week: "Semana 2",
-    title: "Organizar Datos",
-    description: "Ayuda a Bú a clasificar sus hallazgos en tablas de conteo.",
-    icon: "📋",
-    skills: ["Tablas de conteo"],
-  },
-  {
-    week: "Semana 3",
-    title: "Pictogramas",
-    description: "Cuenta historias con dibujos: cada figura vale por varios datos.",
-    icon: "🖼️",
-    skills: ["Pictogramas"],
-  },
-  {
-    week: "Semana 4",
-    title: "Gráficos de Barras",
-    description: "Construye tus propias barras y aprende a leerlas como un experto.",
-    icon: "📊",
-    skills: ["Gráficos de barras"],
-  },
-  {
-    week: "Semana 5",
-    title: "¿Seguro o Imposible?",
-    description: "Clasifica sucesos: ¿es seguro, posible o imposible que ocurran?",
-    icon: "⚖️",
-    skills: ["Certeza", "Posibilidad"],
+    skills: ["Más y menos probable", "Comparación"],
   },
 ];
 
 function GamesPage() {
-  const available = games.filter((g) => g.to);
-  const upcoming = games.filter((g) => !g.to);
-
   return (
     <main className="bg-paper min-h-screen">
       <header className="mx-auto max-w-6xl px-6 pt-6 pb-4 flex items-center justify-between">
@@ -86,6 +99,12 @@ function GamesPage() {
         >
           ← Volver al inicio
         </Link>
+        <Link
+          to="/proyecto"
+          className="text-xs font-semibold text-muted-foreground hover:text-coral transition-colors"
+        >
+          Fundamentación pedagógica →
+        </Link>
       </header>
 
       {/* HERO */}
@@ -94,38 +113,89 @@ function GamesPage() {
           <BuMascot eager className="w-32 md:w-40 h-auto drop-shadow-xl animate-float" />
         </div>
         <p className="mt-4 text-sm font-semibold tracking-widest uppercase text-turquoise">
-          Zona interactiva
+          Zona interactiva · Un módulo por semana
         </p>
         <h1 className="mt-2 text-4xl md:text-6xl font-display font-bold text-institutional-deep">
           ¡A <span className="text-coral">jugar</span> con los datos!
         </h1>
         <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-          Aquí viven todos los juegos de la aventura. Elige uno, sigue las pistas de Bú
-          y conviértete en un Explorador de Datos.
+          Tres misiones de estadística y dos retos de azar. Completa los módulos en orden
+          y conviértete en Explorador de Datos. 🏅
         </p>
       </section>
 
-      {/* DISPONIBLES */}
+      {/* MÓDULOS */}
       <section className="mx-auto max-w-6xl px-6 pb-12">
         <h2 className="text-xl font-display font-bold text-institutional-deep mb-5">
-          🎮 Listos para jugar
+          🗺️ Los módulos de la aventura
         </h2>
-        <div className="grid gap-6 md:grid-cols-2">
-          {available.map((g) => (
+        <div className="grid gap-6 lg:grid-cols-3">
+          {modules.map((m, i) => (
             <Link
-              key={g.week}
-              to={g.to!}
+              key={m.to}
+              to={m.to}
+              className="card-soft p-6 group hover:-translate-y-1 transition-transform block relative overflow-hidden"
+            >
+              <div className="absolute -top-3 -right-1 text-[6rem] leading-none font-display font-bold text-institutional/5 select-none">
+                {i + 1}
+              </div>
+              <div className="relative">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-institutional to-turquoise text-white grid place-items-center text-3xl shadow-lg group-hover:scale-110 transition-transform">
+                  {m.icon}
+                </div>
+                <div className="mt-3 text-xs font-bold tracking-wider text-coral uppercase">
+                  {m.week}
+                </div>
+                <h3 className="mt-1 font-display font-bold text-xl text-institutional-deep">
+                  {m.title}
+                </h3>
+                <p className="text-sm font-semibold text-turquoise mt-0.5">{m.mission}</p>
+                <p className="mt-2 text-sm text-muted-foreground">{m.description}</p>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  <span className="rounded-full bg-institutional/10 text-institutional text-xs font-bold px-2.5 py-1">
+                    {m.dba}
+                  </span>
+                  {m.skills.map((s) => (
+                    <span
+                      key={s}
+                      className="rounded-full bg-turquoise/15 text-institutional-deep text-xs font-semibold px-2.5 py-1"
+                    >
+                      {s}
+                    </span>
+                  ))}
+                </div>
+                <div className="mt-4 inline-flex items-center gap-1 font-display font-semibold text-coral">
+                  Empezar misión <span aria-hidden>→</span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* RETOS DE AZAR */}
+      <section className="mx-auto max-w-6xl px-6 pb-20">
+        <div className="flex items-center gap-3 mb-5 flex-wrap">
+          <h2 className="text-xl font-display font-bold text-institutional-deep">
+            🎲 Retos de azar y probabilidad
+          </h2>
+          <span className="rounded-full bg-coral/10 text-coral text-xs font-bold px-2.5 py-1">
+            DBA 11 · Probabilidad y azar
+          </span>
+        </div>
+        <div className="grid gap-6 md:grid-cols-2">
+          {retosAzar.map((g) => (
+            <Link
+              key={g.to}
+              to={g.to}
               className="card-soft p-6 md:p-8 group hover:-translate-y-1 transition-transform block"
             >
               <div className="flex items-start gap-5">
-                <div className="shrink-0 w-16 h-16 rounded-2xl bg-gradient-to-br from-institutional to-turquoise text-white grid place-items-center text-3xl shadow-lg group-hover:scale-110 transition-transform">
+                <div className="shrink-0 w-16 h-16 rounded-2xl bg-gradient-to-br from-coral to-coral-deep text-white grid place-items-center text-3xl shadow-lg group-hover:scale-110 transition-transform">
                   {g.icon}
                 </div>
                 <div className="flex-1">
-                  <div className="text-xs font-bold tracking-wider text-coral uppercase">
-                    {g.week}
-                  </div>
-                  <h3 className="mt-1 font-display font-bold text-2xl text-institutional-deep">
+                  <h3 className="font-display font-bold text-2xl text-institutional-deep">
                     {g.title}
                   </h3>
                   <p className="mt-2 text-muted-foreground">{g.description}</p>
@@ -145,29 +215,6 @@ function GamesPage() {
                 </div>
               </div>
             </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* PRÓXIMAMENTE */}
-      <section className="mx-auto max-w-6xl px-6 pb-20">
-        <h2 className="text-xl font-display font-bold text-institutional-deep mb-5">
-          🔒 Próximamente
-        </h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {upcoming.map((g) => (
-            <div key={g.week} className="card-soft p-5 opacity-70">
-              <div className="w-12 h-12 rounded-2xl bg-muted grid place-items-center text-2xl grayscale">
-                {g.icon}
-              </div>
-              <div className="mt-3 text-xs font-bold tracking-wider text-muted-foreground uppercase">
-                {g.week}
-              </div>
-              <h3 className="mt-1 font-display font-bold text-lg text-institutional-deep">
-                {g.title}
-              </h3>
-              <p className="mt-1 text-sm text-muted-foreground">{g.description}</p>
-            </div>
           ))}
         </div>
       </section>

@@ -50,7 +50,7 @@ function Semana7() {
 
       <section className="mx-auto max-w-5xl px-6 pb-4 text-center">
         <div className="text-xs font-bold tracking-widest uppercase text-coral">
-          Semana 7
+          Reto de azar · DBA 11 · Probabilidad
         </div>
         <h1 className="mt-2 text-3xl md:text-5xl font-display font-bold text-institutional-deep">
           La Ruleta de la Suerte

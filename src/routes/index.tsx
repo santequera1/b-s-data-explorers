@@ -6,30 +6,74 @@ export const Route = createFileRoute("/")({
 });
 
 type Stop = {
-  n: string;
+  tag: string;
   title: string;
   subtitle: string;
   icon: string;
-  playable?: boolean;
+  to?: "/modulo-1" | "/modulo-2" | "/modulo-3" | "/semana-6" | "/semana-7";
+  cta?: string;
 };
 
 const stops: Stop[] = [
-  { n: "0", title: "Diagnóstico", subtitle: "¿Cuánto sabes ya?", icon: "🧭" },
-  { n: "1", title: "¿Qué es un dato?", subtitle: "Recolectar información", icon: "🔎" },
-  { n: "2", title: "Organizar datos", subtitle: "Tablas de conteo", icon: "📋" },
-  { n: "3", title: "Pictogramas", subtitle: "Contar con dibujos", icon: "🖼️" },
-  { n: "4", title: "Gráficos de barras", subtitle: "¡Qué barra tan alta!", icon: "📊" },
-  { n: "5", title: "¿Seguro o imposible?", subtitle: "Certeza y posibilidad", icon: "⚖️" },
-  { n: "6", title: "Cara o Sello", subtitle: "El gran experimento del azar", icon: "🪙", playable: true },
-  { n: "7", title: "La ruleta de la suerte", subtitle: "Probabilidad", icon: "🎡", playable: true },
-  { n: "8", title: "Proyecto final", subtitle: "¡Serás Explorador!", icon: "🏆" },
+  {
+    tag: "Inicio · Diagnóstico",
+    title: "¡Exploradores de Datos!",
+    subtitle: "La prueba que revela cuánto sabes ya",
+    icon: "🧭",
+  },
+  {
+    tag: "Semana 1 · Módulo 1",
+    title: "¿Qué es un dato?",
+    subtitle: "Misión: El Dilema de la Fruta",
+    icon: "🥭",
+    to: "/modulo-1",
+    cta: "Empezar misión",
+  },
+  {
+    tag: "Semana 2 · Módulo 2",
+    title: "Tablas y gráficos",
+    subtitle: "Misión: Consultoría en la Tienda Escolar",
+    icon: "🏪",
+    to: "/modulo-2",
+    cta: "Empezar misión",
+  },
+  {
+    tag: "Semana 3 · Módulo 3",
+    title: "La moda",
+    subtitle: "Misión: El Jugo Estrella",
+    icon: "🧃",
+    to: "/modulo-3",
+    cta: "Empezar misión",
+  },
+  {
+    tag: "Reto de azar · DBA 11",
+    title: "Cara o Sello",
+    subtitle: "El gran experimento del azar",
+    icon: "🪙",
+    to: "/semana-6",
+    cta: "Jugar",
+  },
+  {
+    tag: "Reto de azar · DBA 11",
+    title: "La Ruleta de la Suerte",
+    subtitle: "¿Qué color es más probable?",
+    icon: "🎡",
+    to: "/semana-7",
+    cta: "Jugar",
+  },
+  {
+    tag: "Meta · Evaluación",
+    title: "¡Eres Explorador!",
+    subtitle: "Demuestra todo lo que aprendiste",
+    icon: "🏆",
+  },
 ];
 
 const schoolFacts = [
   { icon: "🏛️", label: "Carácter", value: "Institución oficial (pública)" },
   { icon: "🎓", label: "Modalidad", value: "Técnica y académica" },
   { icon: "📅", label: "Calendario", value: "Calendario A" },
-  { icon: "🏫", label: "Sedes", value: "2 sedes en Cartagena" },
+  { icon: "🏫", label: "Sedes", value: "Sede principal y sede Escilda Medina Pacheco" },
   { icon: "📍", label: "Ubicación", value: "Barrio María Auxiliadora, Camino del Medio" },
   { icon: "🧒", label: "Comunidad", value: "Más de 1.800 estudiantes" },
 ];
@@ -61,6 +105,12 @@ function LandingPage() {
               La aventura
             </a>
             <Link
+              to="/proyecto"
+              className="px-3 py-2 rounded-full text-institutional-deep hover:bg-institutional/10 transition-colors hidden sm:inline-block"
+            >
+              El proyecto
+            </Link>
+            <Link
               to="/juegos"
               className="ml-1 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-b from-coral to-coral-deep text-white px-4 py-2 shadow hover:-translate-y-0.5 transition-transform"
             >
@@ -75,14 +125,15 @@ function LandingPage() {
         <div className="mx-auto max-w-6xl px-6 pt-10 pb-16 md:pt-16 md:pb-24 grid md:grid-cols-2 gap-8 items-center">
           <div>
             <span className="inline-flex items-center gap-2 rounded-full bg-white/70 backdrop-blur px-4 py-1.5 text-sm font-semibold text-institutional border border-institutional/15">
-              <span>🦉</span> Institución Educativa Ciudad de Tunja · 3° primaria
+              <span>🦉</span> I.E. Ciudad de Tunja · Sede Escilda Medina Pacheco · 3°
             </span>
             <h1 className="mt-5 text-5xl md:text-7xl font-display font-bold text-institutional-deep leading-[1.02]">
               Exploradores <br /> de <span className="text-coral">Datos</span>
             </h1>
             <p className="mt-5 text-lg md:text-xl text-muted-foreground max-w-xl">
-              Un viaje de 8 semanas para aprender <strong>estadística jugando</strong> junto a
-              Bú, la búho exploradora. Recoge pistas, organiza datos y descubre el azar.
+              Una aventura por <strong>módulos semanales</strong> para aprender{" "}
+              <strong>estadística jugando</strong> junto a Bú, la búho exploradora.
+              Recoge datos, constrúyelos en tablas y gráficos, y descubre el azar.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link to="/juegos" className="btn-primary">
@@ -159,11 +210,18 @@ function LandingPage() {
               Innovación pedagógica
             </h3>
             <p className="mt-2 text-muted-foreground">
-              <strong>Exploradores de Datos</strong> es una apuesta del colegio por
-              integrar la tecnología al aula: un recurso digital propio que enseña el
-              pensamiento aleatorio del área de matemáticas a través del juego, la
-              experimentación y la narrativa.
+              <strong>Exploradores de Datos</strong> es el AVA del proyecto de
+              investigación desarrollado en la <strong>sede Escilda Medina Pacheco</strong>:
+              una estrategia mediada por TIC, diseñada con el modelo instruccional{" "}
+              <strong>ADDIE</strong>, que fortalece el pensamiento aleatorio a través del
+              juego, la experimentación y las misiones.
             </p>
+            <Link
+              to="/proyecto"
+              className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-coral hover:underline"
+            >
+              Conocer la fundamentación →
+            </Link>
           </div>
         </div>
       </section>
@@ -188,14 +246,18 @@ function LandingPage() {
             El mapa de la aventura
           </p>
           <h2 className="mt-2 text-3xl md:text-4xl font-display font-bold text-institutional-deep">
-            8 semanas, 8 descubrimientos
+            Un módulo por semana, una misión por módulo
           </h2>
+          <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
+            Del diagnóstico a la meta: tres misiones de estadística (DBA 10), dos retos
+            de azar (DBA 11) y una insignia final.
+          </p>
         </div>
 
         <ol className="relative grid gap-6 md:grid-cols-3">
           {stops.map((s, i) => (
             <li
-              key={s.n}
+              key={i}
               className="card-soft p-6 relative group hover:-translate-y-1 transition-transform"
               style={{ transform: `rotate(${(i % 3) - 1}deg)` }}
             >
@@ -205,7 +267,7 @@ function LandingPage() {
                 </div>
                 <div>
                   <div className="text-xs font-bold tracking-wider text-coral uppercase">
-                    {s.n === "0" ? "Inicio" : s.n === "8" ? "Meta" : `Semana ${s.n}`}
+                    {s.tag}
                   </div>
                   <h3 className="mt-1 font-display font-bold text-lg text-institutional-deep leading-tight">
                     {s.title}
@@ -213,12 +275,12 @@ function LandingPage() {
                   <p className="text-sm text-muted-foreground mt-1">{s.subtitle}</p>
                 </div>
               </div>
-              {s.playable && (
+              {s.to && (
                 <Link
-                  to={s.n === "6" ? "/semana-6" : "/semana-7"}
+                  to={s.to}
                   className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-coral hover:underline"
                 >
-                  🎮 Jugar →
+                  🎮 {s.cta} →
                 </Link>
               )}
             </li>
@@ -253,6 +315,45 @@ function LandingPage() {
         </div>
       </section>
 
+      {/* ADDIE */}
+      <section className="mx-auto max-w-6xl px-6 py-12">
+        <div className="text-center mb-8">
+          <p className="text-sm font-semibold tracking-widest uppercase text-turquoise">
+            Diseño instruccional
+          </p>
+          <h2 className="mt-2 text-3xl md:text-4xl font-display font-bold text-institutional-deep">
+            Construido con el modelo ADDIE
+          </h2>
+          <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
+            Cada módulo de este AVA nace de un proceso sistemático de cinco fases:
+          </p>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+          {[
+            { l: "A", t: "Análisis", icon: "🔍", d: "Diagnóstico del grupo" },
+            { l: "D", t: "Diseño", icon: "📐", d: "Planificación por módulos" },
+            { l: "D", t: "Desarrollo", icon: "🛠️", d: "Creación de misiones" },
+            { l: "I", t: "Implementación", icon: "🏫", d: "Aula + plataforma" },
+            { l: "E", t: "Evaluación", icon: "📈", d: "Valoración de avances" },
+          ].map((f, i) => (
+            <div key={i} className="card-soft p-4 text-center">
+              <div className="mx-auto w-11 h-11 rounded-full bg-gradient-to-br from-institutional to-turquoise text-white grid place-items-center font-display font-bold text-lg shadow">
+                {f.l}
+              </div>
+              <div className="mt-2 font-display font-bold text-sm text-institutional-deep">
+                {f.icon} {f.t}
+              </div>
+              <div className="mt-0.5 text-xs text-muted-foreground">{f.d}</div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-6 text-center">
+          <Link to="/proyecto" className="btn-secondary">
+            Ver cómo aplicamos cada fase →
+          </Link>
+        </div>
+      </section>
+
       {/* DOCENTES */}
       <section className="mx-auto max-w-5xl px-6 py-16">
         <div className="card-soft p-8 md:p-12 bg-gradient-to-br from-institutional to-institutional-deep text-white">
@@ -265,17 +366,25 @@ function LandingPage() {
                 Un recurso alineado al currículo
               </h2>
               <p className="mt-3 text-white/85 max-w-2xl">
-                Recurso digital diseñado para grado <strong>3° de primaria</strong>, alineado a
-                los Estándares Básicos de Competencias del MEN en <em>pensamiento aleatorio</em>.
-                Pensado para integrarse a Moodle: la plataforma administra login y seguimiento;
-                Exploradores de Datos entrega la experiencia interactiva.
+                Recurso digital diseñado para grado <strong>3° de primaria</strong> con el
+                modelo <strong>ADDIE</strong>, alineado a los Estándares Básicos de
+                Competencias del MEN en <em>pensamiento aleatorio</em> y a los{" "}
+                <strong>DBA 10 y 11</strong> de estadística. Pensado para integrarse al
+                aula virtual: la plataforma administra login y seguimiento; Exploradores
+                de Datos entrega la experiencia interactiva.
               </p>
               <ul className="mt-5 grid gap-2 text-white/90 text-sm sm:grid-cols-2">
-                <li className="flex items-center gap-2">✅ Estándares MEN de 3° grado</li>
-                <li className="flex items-center gap-2">✅ Secuencia didáctica de 8 semanas</li>
+                <li className="flex items-center gap-2">✅ DBA 10 y 11 · EBC de 3° grado</li>
+                <li className="flex items-center gap-2">✅ Módulos semanales con misiones</li>
                 <li className="flex items-center gap-2">✅ Juegos y experimentos guiados</li>
                 <li className="flex items-center gap-2">✅ Sin instalación: funciona en el navegador</li>
               </ul>
+              <Link
+                to="/proyecto"
+                className="mt-5 inline-flex items-center gap-2 rounded-full bg-white/15 border border-white/25 px-4 py-2 text-sm font-semibold hover:bg-white/25 transition-colors"
+              >
+                📖 Fundamentación pedagógica completa →
+              </Link>
             </div>
             <div className="text-6xl md:text-7xl">🦉</div>
           </div>
@@ -299,12 +408,20 @@ function LandingPage() {
           <div>
             <div className="font-semibold text-foreground">Institución</div>
             <p>Institución Educativa Ciudad de Tunja</p>
-            <p>Barrio María Auxiliadora, Camino del Medio</p>
+            <p>Sede Escilda Medina Pacheco</p>
             <p>Cartagena de Indias, Colombia · 2026</p>
+            <p className="mt-2">
+              <Link to="/proyecto" className="font-semibold text-coral hover:underline">
+                El proyecto y sus referentes →
+              </Link>
+            </p>
           </div>
           <div>
-            <div className="font-semibold text-foreground">Contacto</div>
-            <p>Prof. Alexis Cogollo Orozco</p>
+            <div className="font-semibold text-foreground">Proyecto Aplicado II · UTB</div>
+            <p>
+              A. Cogollo · S. Jiménez · K. Barrios · E. Dávila · L. Zamorano
+            </p>
+            <p>Asesor: Raúl Ernesto Acosta Mesa</p>
             <p>ieciudaddetunja@hotmail.com</p>
           </div>
         </div>

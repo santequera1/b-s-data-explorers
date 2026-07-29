@@ -297,7 +297,7 @@ function LandingPage() {
         </div>
         <div className="grid gap-6 md:grid-cols-3">
           {[
-            { icon: "🔑", title: "Entra a Moodle", body: "Con tu usuario del colegio, abres tu aula virtual." },
+            { icon: "🔑", title: "Entra al aula virtual", body: "Con tu usuario del colegio, abres tu clase digital." },
             { icon: "🗺️", title: "Descubre cada semana", body: "Bú te acompaña en un reto nuevo lleno de juegos." },
             { icon: "🏅", title: "Gana tu insignia", body: "Al terminar te conviertes en un Explorador de Datos." },
           ].map((step, i) => (

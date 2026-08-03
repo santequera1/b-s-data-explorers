@@ -14,6 +14,8 @@ type Props = {
   missionTitle: string;
   missionBody: string;
   missionTools: string[];
+  videoId?: string;
+  videoTitle?: string;
   children: ReactNode; // el juego
 };
 
@@ -28,6 +30,8 @@ export function ModuleLayout({
   missionTitle,
   missionBody,
   missionTools,
+  videoId,
+  videoTitle,
   children,
 }: Props) {
   return (
@@ -79,6 +83,26 @@ export function ModuleLayout({
           ))}
         </div>
       </section>
+
+      {/* VIDEO */}
+      {videoId && (
+        <section className="mx-auto max-w-5xl px-6 py-6">
+          <h2 className="text-xl font-display font-bold text-institutional-deep mb-4">
+            🎬 {videoTitle ?? "Mira el video de la semana"}
+          </h2>
+          <div className="card-soft overflow-hidden">
+            <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${videoId}`}
+                title={videoTitle ?? "Video de la semana"}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute inset-0 w-full h-full border-0"
+              />
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* JUEGO */}
       <section className="px-4 md:px-6 py-8">

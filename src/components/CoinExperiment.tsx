@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { BuMascot } from "./BuMascot";
+import { saveProgress } from "@/lib/api";
 
 type Face = "cara" | "sello";
 type Range = { id: string; label: string; min: number; max: number };
@@ -30,6 +31,22 @@ export function CoinExperiment({ playerName, soundOn }: Props) {
 
   const caras = useMemo(() => results.filter((r) => r === "cara").length, [results]);
   const sellos = results.length - caras;
+
+  useEffect(() => {
+    if (phase === "resultado" && prediction) {
+      const hit = caras >= prediction.min && caras <= prediction.max;
+      saveProgress({
+        data: {
+          actividad: "reto-moneda",
+          nota: 100,
+          detalle: hit
+            ? `Predicción acertada (${caras} caras)`
+            : `Predicción no acertada (${caras} caras)`,
+        },
+      }).catch(() => {});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase]);
 
   function playBlip() {
     if (!soundOn) return;

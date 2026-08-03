@@ -45,6 +45,8 @@ function Modulo1() {
       missionTitle="El Dilema de la Fruta"
       missionBody="En clase, con tu profe, harán una encuesta de verdad usando un formulario digital para decidir la fruta de la salida pedagógica, y organizarán las respuestas en tablas de frecuencia con una hoja de cálculo."
       missionTools={["📝 Google Forms", "📊 Google Sheets", "🏞️ Salida pedagógica"]}
+      videoId="oq9gPQlnQYk"
+      videoTitle="Aprendiendo sobre los Datos — con tu profe Alexis"
     >
       <FruitDataGame />
     </ModuleLayout>

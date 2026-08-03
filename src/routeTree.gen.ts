@@ -12,10 +12,12 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as Semana7RouteImport } from './routes/semana-7'
 import { Route as Semana6RouteImport } from './routes/semana-6'
 import { Route as ProyectoRouteImport } from './routes/proyecto'
+import { Route as PanelRouteImport } from './routes/panel'
 import { Route as Modulo3RouteImport } from './routes/modulo-3'
 import { Route as Modulo2RouteImport } from './routes/modulo-2'
 import { Route as Modulo1RouteImport } from './routes/modulo-1'
 import { Route as JuegosRouteImport } from './routes/juegos'
+import { Route as IngresarRouteImport } from './routes/ingresar'
 import { Route as IndexRouteImport } from './routes/index'
 
 const Semana7Route = Semana7RouteImport.update({
@@ -31,6 +33,11 @@ const Semana6Route = Semana6RouteImport.update({
 const ProyectoRoute = ProyectoRouteImport.update({
   id: '/proyecto',
   path: '/proyecto',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PanelRoute = PanelRouteImport.update({
+  id: '/panel',
+  path: '/panel',
   getParentRoute: () => rootRouteImport,
 } as any)
 const Modulo3Route = Modulo3RouteImport.update({
@@ -53,6 +60,11 @@ const JuegosRoute = JuegosRouteImport.update({
   path: '/juegos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IngresarRoute = IngresarRouteImport.update({
+  id: '/ingresar',
+  path: '/ingresar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -61,20 +73,24 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ingresar': typeof IngresarRoute
   '/juegos': typeof JuegosRoute
   '/modulo-1': typeof Modulo1Route
   '/modulo-2': typeof Modulo2Route
   '/modulo-3': typeof Modulo3Route
+  '/panel': typeof PanelRoute
   '/proyecto': typeof ProyectoRoute
   '/semana-6': typeof Semana6Route
   '/semana-7': typeof Semana7Route
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ingresar': typeof IngresarRoute
   '/juegos': typeof JuegosRoute
   '/modulo-1': typeof Modulo1Route
   '/modulo-2': typeof Modulo2Route
   '/modulo-3': typeof Modulo3Route
+  '/panel': typeof PanelRoute
   '/proyecto': typeof ProyectoRoute
   '/semana-6': typeof Semana6Route
   '/semana-7': typeof Semana7Route
@@ -82,10 +98,12 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ingresar': typeof IngresarRoute
   '/juegos': typeof JuegosRoute
   '/modulo-1': typeof Modulo1Route
   '/modulo-2': typeof Modulo2Route
   '/modulo-3': typeof Modulo3Route
+  '/panel': typeof PanelRoute
   '/proyecto': typeof ProyectoRoute
   '/semana-6': typeof Semana6Route
   '/semana-7': typeof Semana7Route
@@ -94,30 +112,36 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/ingresar'
     | '/juegos'
     | '/modulo-1'
     | '/modulo-2'
     | '/modulo-3'
+    | '/panel'
     | '/proyecto'
     | '/semana-6'
     | '/semana-7'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/ingresar'
     | '/juegos'
     | '/modulo-1'
     | '/modulo-2'
     | '/modulo-3'
+    | '/panel'
     | '/proyecto'
     | '/semana-6'
     | '/semana-7'
   id:
     | '__root__'
     | '/'
+    | '/ingresar'
     | '/juegos'
     | '/modulo-1'
     | '/modulo-2'
     | '/modulo-3'
+    | '/panel'
     | '/proyecto'
     | '/semana-6'
     | '/semana-7'
@@ -125,10 +149,12 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  IngresarRoute: typeof IngresarRoute
   JuegosRoute: typeof JuegosRoute
   Modulo1Route: typeof Modulo1Route
   Modulo2Route: typeof Modulo2Route
   Modulo3Route: typeof Modulo3Route
+  PanelRoute: typeof PanelRoute
   ProyectoRoute: typeof ProyectoRoute
   Semana6Route: typeof Semana6Route
   Semana7Route: typeof Semana7Route
@@ -155,6 +181,13 @@ declare module '@tanstack/react-router' {
       path: '/proyecto'
       fullPath: '/proyecto'
       preLoaderRoute: typeof ProyectoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/panel': {
+      id: '/panel'
+      path: '/panel'
+      fullPath: '/panel'
+      preLoaderRoute: typeof PanelRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/modulo-3': {
@@ -185,6 +218,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JuegosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ingresar': {
+      id: '/ingresar'
+      path: '/ingresar'
+      fullPath: '/ingresar'
+      preLoaderRoute: typeof IngresarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -197,10 +237,12 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  IngresarRoute: IngresarRoute,
   JuegosRoute: JuegosRoute,
   Modulo1Route: Modulo1Route,
   Modulo2Route: Modulo2Route,
   Modulo3Route: Modulo3Route,
+  PanelRoute: PanelRoute,
   ProyectoRoute: ProyectoRoute,
   Semana6Route: Semana6Route,
   Semana7Route: Semana7Route,

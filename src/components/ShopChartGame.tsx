@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BuMascot } from "./BuMascot";
+import { saveProgress } from "@/lib/api";
 
 type ProductId = "bolis" | "fritos" | "mangos";
 
@@ -30,6 +31,7 @@ export function ShopChartGame() {
   const [pictChecked, setPictChecked] = useState(false);
   const [q1, setQ1] = useState<ProductId | null>(null);
   const [q2, setQ2] = useState<number | null>(null);
+  const [errors, setErrors] = useState(0);
 
   const barsCorrect = PRODUCTS.every((p) => bars[p.id] === p.ventas);
   const pictCorrect = PRODUCTS.every((p) => pict[p.id] === p.ventas / ESCALA);
@@ -44,6 +46,18 @@ export function ShopChartGame() {
     setPictChecked(false);
     setQ1(null);
     setQ2(null);
+    setErrors(0);
+  }
+
+  function finish() {
+    setPhase("resultado");
+    saveProgress({
+      data: {
+        actividad: "modulo-2",
+        nota: Math.max(50, 100 - errors * 5),
+        detalle: `${errors} errores durante la consultoría`,
+      },
+    }).catch(() => {});
   }
 
   return (
@@ -138,6 +152,7 @@ export function ShopChartGame() {
                   onClick={() => {
                     setBarsChecked(true);
                     if (barsCorrect) setPhase("pictograma");
+                    else setErrors((e) => e + 1);
                   }}
                   className="btn-primary"
                 >
@@ -203,6 +218,7 @@ export function ShopChartGame() {
                   onClick={() => {
                     setPictChecked(true);
                     if (pictCorrect) setPhase("preguntas");
+                    else setErrors((e) => e + 1);
                   }}
                   disabled={PRODUCTS.some((p) => pict[p.id] === 0)}
                   className="btn-primary disabled:opacity-60 disabled:cursor-not-allowed"
@@ -229,7 +245,10 @@ export function ShopChartGame() {
                     {PRODUCTS.map((p) => (
                       <button
                         key={p.id}
-                        onClick={() => setQ1(p.id)}
+                        onClick={() => {
+                          setQ1(p.id);
+                          if (p.id !== "bolis") setErrors((e) => e + 1);
+                        }}
                         className={`rounded-2xl px-4 py-2 border-2 font-semibold transition-all ${
                           q1 === p.id
                             ? q1Correct
@@ -255,7 +274,10 @@ export function ShopChartGame() {
                     {[1, 2, 3, 4].map((n) => (
                       <button
                         key={n}
-                        onClick={() => setQ2(n)}
+                        onClick={() => {
+                          setQ2(n);
+                          if (n !== 2) setErrors((e) => e + 1);
+                        }}
                         className={`w-12 h-12 rounded-2xl border-2 font-bold text-lg transition-all ${
                           q2 === n
                             ? q2Correct
@@ -276,7 +298,7 @@ export function ShopChartGame() {
                 </div>
 
                 {q1Correct && q2Correct && (
-                  <button onClick={() => setPhase("resultado")} className="btn-primary animate-bounce-in">
+                  <button onClick={finish} className="btn-primary animate-bounce-in">
                     🏅 Entregar la consultoría
                   </button>
                 )}

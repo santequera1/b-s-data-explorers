@@ -116,6 +116,12 @@ function LandingPage() {
             >
               🎮 Juegos
             </Link>
+            <Link
+              to="/ingresar"
+              className="inline-flex items-center gap-1.5 rounded-full border-2 border-institutional text-institutional px-4 py-1.5 font-bold hover:bg-institutional hover:text-white transition-colors"
+            >
+              🔑 Ingresar
+            </Link>
           </div>
         </div>
       </nav>

@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { BuMascot } from "./BuMascot";
+import { saveProgress } from "@/lib/api";
 
 type FruitId = "mango" | "banano" | "patilla";
 
@@ -39,6 +40,7 @@ export function FruitDataGame() {
   const [answers, setAnswers] = useState<Record<FruitId, number | null>>({ mango: null, banano: null, patilla: null });
   const [tableChecked, setTableChecked] = useState(false);
   const [favorite, setFavorite] = useState<FruitId | null>(null);
+  const [errors, setErrors] = useState(0);
 
   const realCounts = useMemo(() => {
     const c: Record<FruitId, number> = { mango: 0, banano: 0, patilla: 0 };
@@ -59,6 +61,7 @@ export function FruitDataGame() {
       setCounts((c) => ({ ...c, [picked]: c[picked] + 1 }));
       setCurrent((i) => i + 1);
     } else {
+      setErrors((e) => e + 1);
       setShake(true);
       setTimeout(() => setShake(false), 500);
     }
@@ -72,6 +75,22 @@ export function FruitDataGame() {
     setAnswers({ mango: null, banano: null, patilla: null });
     setTableChecked(false);
     setFavorite(null);
+    setErrors(0);
+  }
+
+  function pickFavorite(id: FruitId) {
+    setFavorite(id);
+    if (id === "mango") {
+      saveProgress({
+        data: {
+          actividad: "modulo-1",
+          nota: Math.max(50, 100 - errors * 5),
+          detalle: `${errors} errores durante la misión`,
+        },
+      }).catch(() => {});
+    } else {
+      setErrors((e) => e + 1);
+    }
   }
 
   return (
@@ -253,7 +272,7 @@ export function FruitDataGame() {
                   {FRUITS.map((f) => (
                     <button
                       key={f.id}
-                      onClick={() => setFavorite(f.id)}
+                      onClick={() => pickFavorite(f.id)}
                       className={`card-soft p-4 text-center border-2 transition-all ${
                         favorite === f.id ? "border-coral bg-coral/5" : "border-transparent hover:border-coral/50"
                       }`}

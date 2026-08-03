@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { BuMascot } from "./BuMascot";
+import { saveProgress } from "@/lib/api";
 
 type JuiceId = "mango" | "maracuya" | "tamarindo";
 
@@ -27,6 +28,7 @@ export function JuiceModeGame() {
   const [qModa, setQModa] = useState<JuiceId | null>(null);
   const [qVotos, setQVotos] = useState<number | null>(null);
   const [qMenor, setQMenor] = useState<JuiceId | null>(null);
+  const [errors, setErrors] = useState(0);
 
   const targets = ROUNDS[round % ROUNDS.length];
   const totalVotes = targets.mango + targets.maracuya + targets.tamarindo;
@@ -72,6 +74,18 @@ export function JuiceModeGame() {
     setQModa(null);
     setQVotos(null);
     setQMenor(null);
+    setErrors(0);
+  }
+
+  function finish() {
+    setPhase("resultado");
+    saveProgress({
+      data: {
+        actividad: "modulo-3",
+        nota: Math.max(50, 100 - errors * 10),
+        detalle: `${errors} errores en el análisis`,
+      },
+    }).catch(() => {});
   }
 
   return (
@@ -180,7 +194,10 @@ export function JuiceModeGame() {
                     {JUICES.map((j) => (
                       <button
                         key={j.id}
-                        onClick={() => setQModa(j.id)}
+                        onClick={() => {
+                          setQModa(j.id);
+                          if (j.id !== moda) setErrors((e) => e + 1);
+                        }}
                         className={`rounded-2xl px-4 py-2 border-2 font-semibold transition-all ${
                           qModa === j.id
                             ? qModa === moda
@@ -210,7 +227,10 @@ export function JuiceModeGame() {
                       .map((n) => (
                         <button
                           key={n}
-                          onClick={() => setQVotos(n)}
+                          onClick={() => {
+                            setQVotos(n);
+                            if (n !== targets[moda]) setErrors((e) => e + 1);
+                          }}
                           className={`w-12 h-12 rounded-2xl border-2 font-bold text-lg transition-all ${
                             qVotos === n
                               ? qVotos === targets[moda]
@@ -233,7 +253,10 @@ export function JuiceModeGame() {
                     {JUICES.map((j) => (
                       <button
                         key={j.id}
-                        onClick={() => setQMenor(j.id)}
+                        onClick={() => {
+                          setQMenor(j.id);
+                          if (j.id !== menor) setErrors((e) => e + 1);
+                        }}
                         className={`rounded-2xl px-4 py-2 border-2 font-semibold transition-all ${
                           qMenor === j.id
                             ? qMenor === menor
@@ -254,7 +277,7 @@ export function JuiceModeGame() {
                 </div>
 
                 {allCorrect && (
-                  <button onClick={() => setPhase("resultado")} className="btn-primary animate-bounce-in">
+                  <button onClick={finish} className="btn-primary animate-bounce-in">
                     ⭐ ¡Coronar al Jugo Estrella!
                   </button>
                 )}

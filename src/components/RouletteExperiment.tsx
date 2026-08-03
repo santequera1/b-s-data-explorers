@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { BuMascot } from "./BuMascot";
+import { saveProgress } from "@/lib/api";
 
 type ColorId = "turquesa" | "dorado" | "coral";
 
@@ -53,6 +54,21 @@ export function RouletteExperiment({ playerName, soundOn }: Props) {
     for (const r of results) c[r]++;
     return c;
   }, [results]);
+
+  useEffect(() => {
+    if (phase === "resultado" && prediction) {
+      const max = Math.max(...COLORS.map((c) => counts[c.id]));
+      const hit = counts[prediction.id] === max;
+      saveProgress({
+        data: {
+          actividad: "reto-ruleta",
+          nota: 100,
+          detalle: hit ? "Predicción acertada" : "Predicción no acertada",
+        },
+      }).catch(() => {});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase]);
 
   function playBlip() {
     if (!soundOn) return;

@@ -1,6 +1,7 @@
 import { createFileRoute, Link, redirect, useRouter } from "@tanstack/react-router";
-import { getPanelData, logout } from "@/lib/api";
+import { getPanelData, logout, type DiagnosticoIntento, type Momento } from "@/lib/api";
 import type { ActivityRecord } from "@/lib/server/store";
+import { DIMENSIONES, ITEMS, type Dimension } from "@/lib/diagnostico-data";
 
 export const Route = createFileRoute("/panel")({
   loader: async () => {
@@ -227,6 +228,285 @@ function PanelPage() {
           Forms.
         </p>
       </section>
+
+      <SeccionDiagnostico estudiantes={data.estudiantes} />
     </main>
+  );
+}
+
+/* ---------- Sección: Prueba diagnóstica ---------- */
+
+type EstudianteConDiagnostico = {
+  usuario: string;
+  nombre: string;
+  diagnostico: Partial<Record<Momento, DiagnosticoIntento>>;
+};
+
+function pct(ok: number, total: number) {
+  return total === 0 ? 0 : Math.round((ok / total) * 100);
+}
+
+function CeldaMomento({ intento }: { intento?: DiagnosticoIntento }) {
+  if (!intento) return <span className="text-muted-foreground/40">—</span>;
+  const t = intento.evaluacion.total;
+  const p = pct(t.ok, t.total);
+  return (
+    <div>
+      <span
+        className={`inline-block rounded-full px-2.5 py-0.5 font-bold text-xs ${
+          p >= 80
+            ? "bg-turquoise/20 text-institutional-deep"
+            : p >= 60
+              ? "bg-gold/30 text-institutional-deep"
+              : "bg-coral/15 text-coral"
+        }`}
+      >
+        {p}%
+      </span>
+      <div className="text-[10px] text-muted-foreground mt-0.5">
+        {(["d1", "d2", "d3"] as Dimension[])
+          .map((d) => {
+            const dim = intento.evaluacion.porDimension[d];
+            return `${d.toUpperCase()} ${pct(dim.ok, dim.total)}`;
+          })
+          .join(" · ")}
+      </div>
+    </div>
+  );
+}
+
+function SeccionDiagnostico({ estudiantes }: { estudiantes: EstudianteConDiagnostico[] }) {
+  const presentaronPre = estudiantes.filter((e) => e.diagnostico.pre);
+  const presentaronPost = estudiantes.filter((e) => e.diagnostico.post);
+
+  const itemsEvaluables = ITEMS.filter((i) => !i.abierta);
+
+  function aciertoPorItem(momento: Momento) {
+    const presentes = estudiantes.filter((e) => e.diagnostico[momento]);
+    return itemsEvaluables.map((item) => {
+      const ok = presentes.filter(
+        (e) => e.diagnostico[momento]!.evaluacion.porItem[item.n]
+      ).length;
+      return { n: item.n, dim: item.dim, pct: presentes.length ? Math.round((ok / presentes.length) * 100) : null };
+    });
+  }
+
+  const itemsPre = aciertoPorItem("pre");
+  const itemsPost = aciertoPorItem("post");
+
+  function exportarDiagnosticoCSV() {
+    const head = [
+      "Estudiante",
+      "Usuario",
+      ...(["pre", "post"] as Momento[]).flatMap((m) => [
+        `${m} fecha`,
+        `${m} total %`,
+        `${m} D1 %`,
+        `${m} D2 %`,
+        `${m} D3 %`,
+        ...itemsEvaluables.map((i) => `${m} item ${i.n}`),
+        `${m} resp. 19`,
+        `${m} resp. 24`,
+      ]),
+    ];
+    const rows = estudiantes.map((e) => [
+      e.nombre,
+      e.usuario,
+      ...(["pre", "post"] as Momento[]).flatMap((m) => {
+        const d = e.diagnostico[m];
+        if (!d) return ["", "", "", "", "", ...itemsEvaluables.map(() => ""), "", ""];
+        return [
+          d.fecha.slice(0, 10),
+          pct(d.evaluacion.total.ok, d.evaluacion.total.total),
+          ...(["d1", "d2", "d3"] as Dimension[]).map((dim) =>
+            pct(d.evaluacion.porDimension[dim].ok, d.evaluacion.porDimension[dim].total)
+          ),
+          ...itemsEvaluables.map((i) => (d.evaluacion.porItem[i.n] ? 1 : 0)),
+          d.abiertas.i19,
+          d.abiertas.i24,
+        ];
+      }),
+    ]);
+    const csv = [head, ...rows]
+      .map((r) => r.map((c) => `"${String(c).replaceAll('"', '""')}"`).join(";"))
+      .join("\n");
+    const blob = new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `diagnostico-exploradores-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
+  return (
+    <section className="mx-auto max-w-7xl px-6 pb-16">
+      <div className="flex items-end justify-between flex-wrap gap-3 mb-4">
+        <div>
+          <p className="text-sm font-semibold tracking-widest uppercase text-turquoise">
+            Prueba diagnóstica · «¡Exploradores de Datos!»
+          </p>
+          <h2 className="mt-1 text-2xl md:text-3xl font-display font-bold text-institutional-deep">
+            Resultados pre-test y post-test
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Presentaron: <strong>{presentaronPre.length}</strong> la prueba inicial ·{" "}
+            <strong>{presentaronPost.length}</strong> la prueba final. Enlace para
+            compartir la prueba final:{" "}
+            <code className="bg-institutional/10 rounded px-1.5 py-0.5 text-xs">
+              /prueba-diagnostica?momento=post
+            </code>
+          </p>
+        </div>
+        <button onClick={exportarDiagnosticoCSV} className="btn-primary">
+          📥 Exportar diagnóstico (CSV)
+        </button>
+      </div>
+
+      <div className="card-soft overflow-x-auto">
+        <table className="w-full text-sm min-w-[680px]">
+          <thead>
+            <tr className="bg-institutional text-white">
+              <th className="text-left px-4 py-3 font-display">Estudiante</th>
+              <th className="px-3 py-3 text-center font-display">🧭 Prueba inicial</th>
+              <th className="px-3 py-3 text-center font-display">🏁 Prueba final</th>
+              <th className="px-3 py-3 text-center font-display">Δ Avance</th>
+              <th className="px-3 py-3 text-center font-display">Respuestas abiertas</th>
+            </tr>
+          </thead>
+          <tbody>
+            {estudiantes.map((e, i) => {
+              const pre = e.diagnostico.pre;
+              const post = e.diagnostico.post;
+              const delta =
+                pre && post
+                  ? pct(post.evaluacion.total.ok, post.evaluacion.total.total) -
+                    pct(pre.evaluacion.total.ok, pre.evaluacion.total.total)
+                  : null;
+              return (
+                <tr key={e.usuario} className={i % 2 ? "bg-cream/60" : "bg-white"}>
+                  <td className="px-4 py-2.5">
+                    <div className="font-semibold text-institutional-deep leading-tight">
+                      {e.nombre}
+                    </div>
+                    <div className="text-xs text-muted-foreground">{e.usuario}</div>
+                  </td>
+                  <td className="px-3 py-2.5 text-center">
+                    <CeldaMomento intento={pre} />
+                  </td>
+                  <td className="px-3 py-2.5 text-center">
+                    <CeldaMomento intento={post} />
+                  </td>
+                  <td className="px-3 py-2.5 text-center font-display font-bold">
+                    {delta === null ? (
+                      <span className="text-muted-foreground/40">—</span>
+                    ) : (
+                      <span className={delta >= 0 ? "text-turquoise" : "text-coral"}>
+                        {delta > 0 ? "+" : ""}
+                        {delta}
+                      </span>
+                    )}
+                  </td>
+                  <td className="px-3 py-2.5 text-center">
+                    {pre || post ? (
+                      <details className="text-left">
+                        <summary className="cursor-pointer text-xs font-bold text-coral text-center">
+                          Ver ✍️
+                        </summary>
+                        <div className="mt-2 space-y-2 text-xs text-institutional-deep max-w-56">
+                          {(["pre", "post"] as Momento[]).map((m) => {
+                            const d = e.diagnostico[m];
+                            if (!d) return null;
+                            return (
+                              <div key={m} className="bg-cream rounded-lg p-2">
+                                <div className="font-bold uppercase text-[10px] text-turquoise">
+                                  {m === "pre" ? "Inicial" : "Final"}
+                                </div>
+                                <p>
+                                  <strong>19 (ruletas):</strong> {d.abiertas.i19 || "—"}
+                                </p>
+                                <p>
+                                  <strong>24 (aprendizaje):</strong> {d.abiertas.i24 || "—"}
+                                </p>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </details>
+                    ) : (
+                      <span className="text-muted-foreground/40">—</span>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Análisis por ítem */}
+      {presentaronPre.length > 0 && (
+        <div className="card-soft mt-6 p-5 overflow-x-auto">
+          <h3 className="font-display font-bold text-lg text-institutional-deep mb-1">
+            📊 Porcentaje de acierto por ítem
+          </h3>
+          <p className="text-xs text-muted-foreground mb-3">
+            D1 = {DIMENSIONES.d1} · D2 = {DIMENSIONES.d2} · D3 = {DIMENSIONES.d3}. Los
+            ítems 19 y 24 son abiertos (valoración con rúbrica).
+          </p>
+          <table className="text-xs min-w-[640px]">
+            <thead>
+              <tr>
+                <th className="text-left pr-3 py-1 font-semibold text-muted-foreground">Ítem</th>
+                {itemsPre.map((it) => (
+                  <th key={it.n} className="px-1.5 py-1 text-center font-bold text-institutional-deep">
+                    {it.n}
+                    <div className="text-[9px] font-semibold text-turquoise">
+                      {it.dim.toUpperCase()}
+                    </div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="pr-3 py-1 font-semibold text-muted-foreground">Inicial</td>
+                {itemsPre.map((it) => (
+                  <td key={it.n} className="px-1.5 py-1 text-center">
+                    <CeldaPct v={it.pct} />
+                  </td>
+                ))}
+              </tr>
+              {presentaronPost.length > 0 && (
+                <tr>
+                  <td className="pr-3 py-1 font-semibold text-muted-foreground">Final</td>
+                  {itemsPost.map((it) => (
+                    <td key={it.n} className="px-1.5 py-1 text-center">
+                      <CeldaPct v={it.pct} />
+                    </td>
+                  ))}
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
+  );
+}
+
+function CeldaPct({ v }: { v: number | null }) {
+  if (v === null) return <span className="text-muted-foreground/40">—</span>;
+  return (
+    <span
+      className={`inline-block min-w-8 rounded px-1 py-0.5 font-bold ${
+        v >= 80
+          ? "bg-turquoise/20 text-institutional-deep"
+          : v >= 50
+            ? "bg-gold/30 text-institutional-deep"
+            : "bg-coral/15 text-coral"
+      }`}
+    >
+      {v}
+    </span>
   );
 }

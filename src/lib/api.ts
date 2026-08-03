@@ -72,7 +72,86 @@ export const getMyProgress = createServerFn({ method: "GET" }).handler(async () 
   const session = store.verifySession(getCookie(COOKIE));
   if (!session) return null;
   const progress = store.readJson<import("./server/store").ProgressMap>("progress.json", {});
-  return { session, actividades: progress[session.usuario] ?? {} };
+  const diagnosticos = store.readJson<
+    Record<string, Partial<Record<"pre" | "post", unknown>>>
+  >("diagnosticos.json", {});
+  const mine = diagnosticos[session.usuario] ?? {};
+  return {
+    session,
+    actividades: progress[session.usuario] ?? {},
+    presentado: { pre: Boolean(mine.pre), post: Boolean(mine.post) },
+  };
+});
+
+/* ---------- Prueba diagnóstica ---------- */
+
+export type Momento = "pre" | "post";
+
+export type RespuestaValor = string | number | Record<string, string | number>;
+
+export type DiagnosticoIntento = {
+  fecha: string;
+  respuestas: Record<string, RespuestaValor>;
+  abiertas: { i19: string; i24: string };
+  evaluacion: import("./diagnostico-data").Evaluacion;
+  intentosExtra: number;
+};
+
+type DiagnosticoMap = Record<string, Partial<Record<Momento, DiagnosticoIntento>>>;
+
+export const saveDiagnostico = createServerFn({ method: "POST" })
+  .inputValidator(
+    (d: {
+      momento: Momento;
+      respuestas: Record<string, RespuestaValor>;
+      abiertas: { i19: string; i24: string };
+    }) => d
+  )
+  .handler(async ({ data }) => {
+    const store = await import("./server/store");
+    const { evaluar } = await import("./diagnostico-data");
+    const { getCookie } = await import("@tanstack/react-start/server");
+    const session = store.verifySession(getCookie(COOKIE));
+    if (!session || session.rol !== "estudiante") {
+      return { ok: false as const, motivo: "sin-sesion" as const };
+    }
+    const momento: Momento = data.momento === "post" ? "post" : "pre";
+    const all = store.readJson<DiagnosticoMap>("diagnosticos.json", {});
+    const mine = all[session.usuario] ?? {};
+    const previo = mine[momento];
+    if (previo) {
+      // El primer intento es el válido metodológicamente; los demás solo se cuentan.
+      previo.intentosExtra += 1;
+      all[session.usuario] = mine;
+      store.writeJson("diagnosticos.json", all);
+      return { ok: true as const, yaExistia: true as const };
+    }
+    mine[momento] = {
+      fecha: new Date().toISOString(),
+      respuestas: data.respuestas,
+      abiertas: {
+        i19: String(data.abiertas.i19 ?? "").slice(0, 1000),
+        i24: String(data.abiertas.i24 ?? "").slice(0, 1000),
+      },
+      evaluacion: evaluar(data.respuestas),
+      intentosExtra: 0,
+    };
+    all[session.usuario] = mine;
+    store.writeJson("diagnosticos.json", all);
+    return { ok: true as const, yaExistia: false as const };
+  });
+
+export const getMyDiagnostico = createServerFn({ method: "GET" }).handler(async () => {
+  const store = await import("./server/store");
+  const { getCookie } = await import("@tanstack/react-start/server");
+  const session = store.verifySession(getCookie(COOKIE));
+  if (!session) return null;
+  const all = store.readJson<DiagnosticoMap>("diagnosticos.json", {});
+  const mine = all[session.usuario] ?? {};
+  return {
+    session,
+    presentado: { pre: Boolean(mine.pre), post: Boolean(mine.post) },
+  };
 });
 
 export const getPanelData = createServerFn({ method: "GET" }).handler(async () => {
@@ -82,6 +161,7 @@ export const getPanelData = createServerFn({ method: "GET" }).handler(async () =
   if (!session || session.rol !== "docente") return null;
   const users = store.readJson<import("./server/store").User[]>("users.json", []);
   const progress = store.readJson<import("./server/store").ProgressMap>("progress.json", {});
+  const diagnosticos = store.readJson<DiagnosticoMap>("diagnosticos.json", {});
   return {
     docente: session.nombre,
     estudiantes: users
@@ -90,6 +170,7 @@ export const getPanelData = createServerFn({ method: "GET" }).handler(async () =
         usuario: u.usuario,
         nombre: u.nombre,
         actividades: progress[u.usuario] ?? {},
+        diagnostico: diagnosticos[u.usuario] ?? {},
       })),
   };
 });

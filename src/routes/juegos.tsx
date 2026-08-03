@@ -101,6 +101,15 @@ const retosAzar: AzarCard[] = [
 
 const ALL_IDS = [...modules.map((m) => m.id), ...retosAzar.map((r) => r.id)];
 
+function DoneBadgeDiagnostico({ presentado }: { presentado: boolean }) {
+  if (!presentado) return null;
+  return (
+    <span className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full bg-turquoise/15 border border-turquoise/40 px-2.5 py-1 text-xs font-bold text-institutional-deep">
+      ✅ Presentada
+    </span>
+  );
+}
+
 function DoneBadge({ record }: { record?: ActivityRecord }) {
   if (!record) return null;
   return (
@@ -198,8 +207,29 @@ function GamesPage() {
         )}
       </section>
 
-      {/* ACTIVIDAD INICIAL */}
-      <section className="mx-auto max-w-6xl px-6 pb-10">
+      {/* ACTIVIDADES INICIALES */}
+      <section className="mx-auto max-w-6xl px-6 pb-10 grid gap-4 md:grid-cols-2">
+        <Link
+          to="/prueba-diagnostica"
+          className="card-soft p-5 flex items-center gap-4 border-2 border-dashed border-institutional/40 hover:-translate-y-0.5 transition-transform relative"
+        >
+          <DoneBadgeDiagnostico presentado={data?.presentado?.pre ?? false} />
+          <span className="shrink-0 w-12 h-12 rounded-2xl bg-institutional/10 grid place-items-center text-2xl">
+            🧭
+          </span>
+          <span className="flex-1">
+            <span className="block text-xs font-bold tracking-wider text-coral uppercase">
+              Inicio de la aventura · Evaluación
+            </span>
+            <span className="block font-display font-bold text-lg text-institutional-deep">
+              ¡Exploradores de Datos! Mi prueba
+            </span>
+            <span className="block text-sm text-muted-foreground">
+              6 situaciones para descubrir cuánto sabes de estadística y probabilidad.
+            </span>
+          </span>
+          <span className="font-display font-semibold text-coral">Presentar →</span>
+        </Link>
         <a
           href="https://docs.google.com/forms/d/e/1FAIpQLSefcumlUjoAoY45Lf92d0Buz4w21pqjUsX_XtIhjuYI1uFaeA/viewform"
           target="_blank"

@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as Semana7RouteImport } from './routes/semana-7'
 import { Route as Semana6RouteImport } from './routes/semana-6'
+import { Route as PruebaDiagnosticaRouteImport } from './routes/prueba-diagnostica'
 import { Route as ProyectoRouteImport } from './routes/proyecto'
 import { Route as PanelRouteImport } from './routes/panel'
 import { Route as Modulo3RouteImport } from './routes/modulo-3'
@@ -28,6 +29,11 @@ const Semana7Route = Semana7RouteImport.update({
 const Semana6Route = Semana6RouteImport.update({
   id: '/semana-6',
   path: '/semana-6',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PruebaDiagnosticaRoute = PruebaDiagnosticaRouteImport.update({
+  id: '/prueba-diagnostica',
+  path: '/prueba-diagnostica',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProyectoRoute = ProyectoRouteImport.update({
@@ -80,6 +86,7 @@ export interface FileRoutesByFullPath {
   '/modulo-3': typeof Modulo3Route
   '/panel': typeof PanelRoute
   '/proyecto': typeof ProyectoRoute
+  '/prueba-diagnostica': typeof PruebaDiagnosticaRoute
   '/semana-6': typeof Semana6Route
   '/semana-7': typeof Semana7Route
 }
@@ -92,6 +99,7 @@ export interface FileRoutesByTo {
   '/modulo-3': typeof Modulo3Route
   '/panel': typeof PanelRoute
   '/proyecto': typeof ProyectoRoute
+  '/prueba-diagnostica': typeof PruebaDiagnosticaRoute
   '/semana-6': typeof Semana6Route
   '/semana-7': typeof Semana7Route
 }
@@ -105,6 +113,7 @@ export interface FileRoutesById {
   '/modulo-3': typeof Modulo3Route
   '/panel': typeof PanelRoute
   '/proyecto': typeof ProyectoRoute
+  '/prueba-diagnostica': typeof PruebaDiagnosticaRoute
   '/semana-6': typeof Semana6Route
   '/semana-7': typeof Semana7Route
 }
@@ -119,6 +128,7 @@ export interface FileRouteTypes {
     | '/modulo-3'
     | '/panel'
     | '/proyecto'
+    | '/prueba-diagnostica'
     | '/semana-6'
     | '/semana-7'
   fileRoutesByTo: FileRoutesByTo
@@ -131,6 +141,7 @@ export interface FileRouteTypes {
     | '/modulo-3'
     | '/panel'
     | '/proyecto'
+    | '/prueba-diagnostica'
     | '/semana-6'
     | '/semana-7'
   id:
@@ -143,6 +154,7 @@ export interface FileRouteTypes {
     | '/modulo-3'
     | '/panel'
     | '/proyecto'
+    | '/prueba-diagnostica'
     | '/semana-6'
     | '/semana-7'
   fileRoutesById: FileRoutesById
@@ -156,6 +168,7 @@ export interface RootRouteChildren {
   Modulo3Route: typeof Modulo3Route
   PanelRoute: typeof PanelRoute
   ProyectoRoute: typeof ProyectoRoute
+  PruebaDiagnosticaRoute: typeof PruebaDiagnosticaRoute
   Semana6Route: typeof Semana6Route
   Semana7Route: typeof Semana7Route
 }
@@ -174,6 +187,13 @@ declare module '@tanstack/react-router' {
       path: '/semana-6'
       fullPath: '/semana-6'
       preLoaderRoute: typeof Semana6RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/prueba-diagnostica': {
+      id: '/prueba-diagnostica'
+      path: '/prueba-diagnostica'
+      fullPath: '/prueba-diagnostica'
+      preLoaderRoute: typeof PruebaDiagnosticaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/proyecto': {
@@ -244,6 +264,7 @@ const rootRouteChildren: RootRouteChildren = {
   Modulo3Route: Modulo3Route,
   PanelRoute: PanelRoute,
   ProyectoRoute: ProyectoRoute,
+  PruebaDiagnosticaRoute: PruebaDiagnosticaRoute,
   Semana6Route: Semana6Route,
   Semana7Route: Semana7Route,
 }

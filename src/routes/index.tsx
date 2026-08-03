@@ -10,7 +10,7 @@ type Stop = {
   title: string;
   subtitle: string;
   icon: string;
-  to?: "/modulo-1" | "/modulo-2" | "/modulo-3" | "/semana-6" | "/semana-7";
+  to?: "/modulo-1" | "/modulo-2" | "/modulo-3" | "/semana-6" | "/semana-7" | "/prueba-diagnostica";
   cta?: string;
 };
 
@@ -20,6 +20,8 @@ const stops: Stop[] = [
     title: "¡Exploradores de Datos!",
     subtitle: "La prueba que revela cuánto sabes ya",
     icon: "🧭",
+    to: "/prueba-diagnostica",
+    cta: "Presentar",
   },
   {
     tag: "Semana 1 · Módulo 1",

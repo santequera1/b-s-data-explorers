@@ -141,6 +141,45 @@ function ProyectoLecturaPage() {
         </p>
       </section>
 
+      {/* DESCARGA DE DOCUMENTOS OFICIALES EN PDF */}
+      <section className="mx-auto max-w-5xl px-6 pb-6">
+        <div className="card-soft p-5 bg-gradient-to-r from-institutional/5 via-turquoise/10 to-coral/10 border-2 border-institutional/20 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm">
+          <div className="flex items-center gap-3.5 text-center md:text-left">
+            <span className="text-4xl shrink-0">📑</span>
+            <div>
+              <h3 className="font-display font-bold text-base text-institutional-deep">
+                Documentación Oficial en PDF para Descarga
+              </h3>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Dossier de sustentación académica (UTB · Rúbrica 5.0) y Manual institucional de implementación escolar.
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-wrap sm:flex-nowrap items-center gap-2.5 w-full md:w-auto">
+            <a
+              href="/docs/Dossier_Sustentacion_Docente_UTB_AVA_Lectura.pdf"
+              download
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary text-xs py-2 px-3.5 flex items-center justify-center gap-1.5 whitespace-nowrap w-full sm:w-auto shadow-xs"
+            >
+              <span>🎓</span>
+              <span>Dossier Sustentación UTB (PDF)</span>
+            </a>
+            <a
+              href="/docs/Manual_Institucional_Implementacion_Colegio_Ciudad_de_Tunja.pdf"
+              download
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary text-xs py-2 px-3.5 flex items-center justify-center gap-1.5 whitespace-nowrap w-full sm:w-auto shadow-xs"
+            >
+              <span>🏫</span>
+              <span>Manual Colegio (PDF)</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* RÚBRICA DE EVALUACIÓN (CUMPLIMIENTO TOTAL) */}
       <section className="mx-auto max-w-6xl px-6 py-4">
         <div className="card-soft p-6 md:p-8 border-2 border-emerald-300 bg-emerald-50/40 mb-8">

@@ -329,6 +329,45 @@ function LecturaLandingPage() {
         </div>
       </section>
 
+      {/* DESCARGA DE DOCUMENTACIÓN INSTITUCIONAL Y ACADÉMICA */}
+      <section className="mx-auto max-w-6xl px-4 sm:px-6 pb-8">
+        <div className="card-soft p-4 md:p-5 border border-institutional/20 bg-white flex flex-col md:flex-row items-center justify-between gap-4 shadow-xs">
+          <div className="flex items-center gap-3 text-center md:text-left">
+            <span className="text-2xl sm:text-3xl shrink-0">📄</span>
+            <div>
+              <h4 className="font-display font-bold text-sm sm:text-base text-institutional-deep">
+                Documentación Pedagógica e Institucional en PDF
+              </h4>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Descarga el Dossier Académico de Sustentación (UTB) y el Manual de Operación para la I.E. Ciudad de Tunja.
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 w-full md:w-auto">
+            <a
+              href="/docs/Dossier_Sustentacion_Docente_UTB_AVA_Lectura.pdf"
+              download
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary text-xs py-2 px-3.5 shadow-xs flex items-center justify-center gap-1.5 whitespace-nowrap w-full sm:w-auto"
+            >
+              <span>🎓</span>
+              <span>Dossier Docente UTB</span>
+            </a>
+            <a
+              href="/docs/Manual_Institucional_Implementacion_Colegio_Ciudad_de_Tunja.pdf"
+              download
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary text-xs py-2 px-3.5 shadow-xs flex items-center justify-center gap-1.5 whitespace-nowrap w-full sm:w-auto"
+            >
+              <span>🏫</span>
+              <span>Manual Colegio</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* FOOTER */}
       <footer className="border-t border-border/60 bg-white/60 py-6 text-center text-xs text-muted-foreground">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-3">

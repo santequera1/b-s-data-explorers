@@ -13,9 +13,21 @@ export const DIMENSIONES: Record<Dimension, string> = {
 /* ---------- Situación 1: La fruta favorita (ítems 1–4) ---------- */
 
 export const FRUTAS_SECUENCIA = [
-  "manzana", "banano", "manzana", "uva", "naranja",
-  "banano", "manzana", "uva", "banano", "manzana",
-  "banano", "manzana", "uva", "banano", "manzana",
+  "manzana",
+  "banano",
+  "manzana",
+  "uva",
+  "naranja",
+  "banano",
+  "manzana",
+  "uva",
+  "banano",
+  "manzana",
+  "banano",
+  "manzana",
+  "uva",
+  "banano",
+  "manzana",
 ] as const;
 
 export const FRUTAS = [
@@ -63,8 +75,16 @@ export const FICHAS = [
 /* ---------- Situación 6: Mi propia gráfica (ítems 20–24) ---------- */
 
 export const MASCOTAS_SECUENCIA = [
-  "perro", "gato", "perro", "conejo", "gato",
-  "perro", "pajaro", "conejo", "perro", "gato",
+  "perro",
+  "gato",
+  "perro",
+  "conejo",
+  "gato",
+  "perro",
+  "pajaro",
+  "conejo",
+  "perro",
+  "gato",
 ] as const;
 
 export const MASCOTAS = [

@@ -14,8 +14,18 @@ const FRUITS: FruitDef[] = [
 
 // 12 amigos encuestados: 6 mango, 4 banano, 2 patilla
 const BASE_VOTES: FruitId[] = [
-  "mango", "banano", "mango", "patilla", "mango", "banano",
-  "mango", "mango", "banano", "patilla", "banano", "mango",
+  "mango",
+  "banano",
+  "mango",
+  "patilla",
+  "mango",
+  "banano",
+  "mango",
+  "mango",
+  "banano",
+  "patilla",
+  "banano",
+  "mango",
 ];
 
 const KID_FACES = ["👧🏽", "👦🏾", "👧🏻", "👦🏽", "👧🏾", "👦🏻", "👧🏿", "👦🏿", "👧🏼", "👦🏼", "👧🏽", "👦🏾"];
@@ -35,9 +45,17 @@ export function FruitDataGame() {
   const [phase, setPhase] = useState<Phase>("intro");
   const [votes, setVotes] = useState<FruitId[]>(() => shuffle(BASE_VOTES));
   const [current, setCurrent] = useState(0);
-  const [counts, setCounts] = useState<Record<FruitId, number>>({ mango: 0, banano: 0, patilla: 0 });
+  const [counts, setCounts] = useState<Record<FruitId, number>>({
+    mango: 0,
+    banano: 0,
+    patilla: 0,
+  });
   const [shake, setShake] = useState(false);
-  const [answers, setAnswers] = useState<Record<FruitId, number | null>>({ mango: null, banano: null, patilla: null });
+  const [answers, setAnswers] = useState<Record<FruitId, number | null>>({
+    mango: null,
+    banano: null,
+    patilla: null,
+  });
   const [tableChecked, setTableChecked] = useState(false);
   const [favorite, setFavorite] = useState<FruitId | null>(null);
   const [errors, setErrors] = useState(0);
@@ -107,15 +125,14 @@ export function FruitDataGame() {
               <div className="animate-bounce-in space-y-5">
                 <Bubble>
                   <p className="text-lg md:text-xl text-institutional-deep font-medium">
-                    ¡Hola, explorador! Un <strong>dato</strong> es una pieza de
-                    información que recogemos del mundo: una respuesta, un color, un
-                    número…
+                    ¡Hola, explorador! Un <strong>dato</strong> es una pieza de información que
+                    recogemos del mundo: una respuesta, un color, un número…
                   </p>
                   <p className="mt-3 text-institutional-deep text-lg">
-                    La profe tiene un dilema: quiere llevar <strong>una sola fruta</strong>{" "}
-                    a la salida pedagógica, ¡pero no sabe cuál! Vamos a{" "}
-                    <strong>encuestar a 12 amigos</strong> y registrar cada respuesta como
-                    un dato. 🍉🥭🍌
+                    La profe tiene un dilema: quiere llevar <strong>una sola fruta</strong> a la
+                    salida pedagógica, ¡pero no sabe cuál! Vamos a{" "}
+                    <strong>encuestar a 12 amigos</strong> y registrar cada respuesta como un dato.
+                    🍉🥭🍌
                   </p>
                 </Bubble>
                 <button onClick={() => setPhase("encuesta")} className="btn-primary text-lg">
@@ -184,9 +201,9 @@ export function FruitDataGame() {
                   <div className="animate-bounce-in space-y-5">
                     <Bubble>
                       <p className="text-lg text-institutional-deep">
-                        ¡Encuesta terminada! 🎉 Registraste <strong>12 datos</strong>.
-                        Ahora organicémoslos en una <strong>tabla de frecuencia</strong>:
-                        cuenta los palotes y escribe cuántos votos tuvo cada fruta.
+                        ¡Encuesta terminada! 🎉 Registraste <strong>12 datos</strong>. Ahora
+                        organicémoslos en una <strong>tabla de frecuencia</strong>: cuenta los
+                        palotes y escribe cuántos votos tuvo cada fruta.
                       </p>
                     </Bubble>
                     <button onClick={() => setPhase("tabla")} className="btn-primary">
@@ -201,8 +218,8 @@ export function FruitDataGame() {
               <div className="animate-bounce-in space-y-5">
                 <Bubble>
                   <p className="text-lg text-institutional-deep">
-                    La <strong>frecuencia</strong> es el número de veces que se repite un
-                    dato. ¿Cuántos votos tuvo cada fruta?
+                    La <strong>frecuencia</strong> es el número de veces que se repite un dato.
+                    ¿Cuántos votos tuvo cada fruta?
                   </p>
                 </Bubble>
                 <div className="card-soft p-5 bg-cream space-y-4">
@@ -252,7 +269,9 @@ export function FruitDataGame() {
                     setTableChecked(true);
                     if (tableCorrect) setPhase("resultado");
                   }}
-                  disabled={answers.mango === null || answers.banano === null || answers.patilla === null}
+                  disabled={
+                    answers.mango === null || answers.banano === null || answers.patilla === null
+                  }
                   className="btn-primary disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   ✅ Revisar mi tabla
@@ -264,8 +283,8 @@ export function FruitDataGame() {
               <div className="animate-bounce-in space-y-5">
                 <Bubble>
                   <p className="text-lg text-institutional-deep">
-                    ¡Tabla perfecta! 🏅 Ahora resuelve el dilema de la profe: según los
-                    datos, ¿qué fruta debe llevar a la salida?
+                    ¡Tabla perfecta! 🏅 Ahora resuelve el dilema de la profe: según los datos, ¿qué
+                    fruta debe llevar a la salida?
                   </p>
                 </Bubble>
                 <div className="grid grid-cols-3 gap-3">
@@ -274,7 +293,9 @@ export function FruitDataGame() {
                       key={f.id}
                       onClick={() => pickFavorite(f.id)}
                       className={`card-soft p-4 text-center border-2 transition-all ${
-                        favorite === f.id ? "border-coral bg-coral/5" : "border-transparent hover:border-coral/50"
+                        favorite === f.id
+                          ? "border-coral bg-coral/5"
+                          : "border-transparent hover:border-coral/50"
                       }`}
                     >
                       <div className="text-4xl">{f.icon}</div>
@@ -290,15 +311,14 @@ export function FruitDataGame() {
                     {favorite === "mango" ? (
                       <p className="text-lg text-institutional-deep">
                         🎉 ¡Exacto! El <strong>mango</strong> ganó con{" "}
-                        <strong>{realCounts.mango} votos</strong>. Acabas de hacer lo que
-                        hacen los estadísticos: <strong>recolectar datos</strong>,{" "}
+                        <strong>{realCounts.mango} votos</strong>. Acabas de hacer lo que hacen los
+                        estadísticos: <strong>recolectar datos</strong>,{" "}
                         <strong>organizarlos en una tabla</strong> y{" "}
                         <strong>tomar una decisión</strong> con ellos. ¡Dilema resuelto!
                       </p>
                     ) : (
                       <p className="text-lg text-institutional-deep">
-                        🤔 Mira bien la tabla: ¿cuál fruta tiene <strong>más</strong>{" "}
-                        votos?
+                        🤔 Mira bien la tabla: ¿cuál fruta tiene <strong>más</strong> votos?
                       </p>
                     )}
                   </Bubble>

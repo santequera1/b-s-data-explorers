@@ -117,9 +117,7 @@ export function ModuleLayout({
       {/* MISIÓN EN EL AULA */}
       <section className="mx-auto max-w-5xl px-6 py-8 pb-16">
         <div className="card-soft p-7 md:p-9 bg-gradient-to-br from-institutional to-institutional-deep text-white">
-          <p className="text-xs font-bold tracking-widest uppercase text-gold">
-            Misión en el aula
-          </p>
+          <p className="text-xs font-bold tracking-widest uppercase text-gold">Misión en el aula</p>
           <h2 className="mt-2 text-2xl font-display font-bold">{missionTitle}</h2>
           <p className="mt-3 text-white/85">{missionBody}</p>
           <div className="mt-4 flex flex-wrap gap-2">

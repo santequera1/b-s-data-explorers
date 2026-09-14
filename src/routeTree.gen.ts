@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TutorIaRouteImport } from './routes/tutor-ia'
 import { Route as Semana7RouteImport } from './routes/semana-7'
 import { Route as Semana6RouteImport } from './routes/semana-6'
 import { Route as PruebaDiagnosticaRouteImport } from './routes/prueba-diagnostica'
@@ -17,10 +18,18 @@ import { Route as PanelRouteImport } from './routes/panel'
 import { Route as Modulo3RouteImport } from './routes/modulo-3'
 import { Route as Modulo2RouteImport } from './routes/modulo-2'
 import { Route as Modulo1RouteImport } from './routes/modulo-1'
+import { Route as LecturaAdaptativaRouteImport } from './routes/lectura-adaptativa'
 import { Route as JuegosRouteImport } from './routes/juegos'
 import { Route as IngresarRouteImport } from './routes/ingresar'
+import { Route as EvaluacionFormativaRouteImport } from './routes/evaluacion-formativa'
+import { Route as DiagnosticoLecturaRouteImport } from './routes/diagnostico-lectura'
 import { Route as IndexRouteImport } from './routes/index'
 
+const TutorIaRoute = TutorIaRouteImport.update({
+  id: '/tutor-ia',
+  path: '/tutor-ia',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Semana7Route = Semana7RouteImport.update({
   id: '/semana-7',
   path: '/semana-7',
@@ -61,6 +70,11 @@ const Modulo1Route = Modulo1RouteImport.update({
   path: '/modulo-1',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LecturaAdaptativaRoute = LecturaAdaptativaRouteImport.update({
+  id: '/lectura-adaptativa',
+  path: '/lectura-adaptativa',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const JuegosRoute = JuegosRouteImport.update({
   id: '/juegos',
   path: '/juegos',
@@ -71,6 +85,16 @@ const IngresarRoute = IngresarRouteImport.update({
   path: '/ingresar',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EvaluacionFormativaRoute = EvaluacionFormativaRouteImport.update({
+  id: '/evaluacion-formativa',
+  path: '/evaluacion-formativa',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DiagnosticoLecturaRoute = DiagnosticoLecturaRouteImport.update({
+  id: '/diagnostico-lectura',
+  path: '/diagnostico-lectura',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -79,8 +103,11 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/diagnostico-lectura': typeof DiagnosticoLecturaRoute
+  '/evaluacion-formativa': typeof EvaluacionFormativaRoute
   '/ingresar': typeof IngresarRoute
   '/juegos': typeof JuegosRoute
+  '/lectura-adaptativa': typeof LecturaAdaptativaRoute
   '/modulo-1': typeof Modulo1Route
   '/modulo-2': typeof Modulo2Route
   '/modulo-3': typeof Modulo3Route
@@ -89,11 +116,15 @@ export interface FileRoutesByFullPath {
   '/prueba-diagnostica': typeof PruebaDiagnosticaRoute
   '/semana-6': typeof Semana6Route
   '/semana-7': typeof Semana7Route
+  '/tutor-ia': typeof TutorIaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/diagnostico-lectura': typeof DiagnosticoLecturaRoute
+  '/evaluacion-formativa': typeof EvaluacionFormativaRoute
   '/ingresar': typeof IngresarRoute
   '/juegos': typeof JuegosRoute
+  '/lectura-adaptativa': typeof LecturaAdaptativaRoute
   '/modulo-1': typeof Modulo1Route
   '/modulo-2': typeof Modulo2Route
   '/modulo-3': typeof Modulo3Route
@@ -102,12 +133,16 @@ export interface FileRoutesByTo {
   '/prueba-diagnostica': typeof PruebaDiagnosticaRoute
   '/semana-6': typeof Semana6Route
   '/semana-7': typeof Semana7Route
+  '/tutor-ia': typeof TutorIaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/diagnostico-lectura': typeof DiagnosticoLecturaRoute
+  '/evaluacion-formativa': typeof EvaluacionFormativaRoute
   '/ingresar': typeof IngresarRoute
   '/juegos': typeof JuegosRoute
+  '/lectura-adaptativa': typeof LecturaAdaptativaRoute
   '/modulo-1': typeof Modulo1Route
   '/modulo-2': typeof Modulo2Route
   '/modulo-3': typeof Modulo3Route
@@ -116,13 +151,17 @@ export interface FileRoutesById {
   '/prueba-diagnostica': typeof PruebaDiagnosticaRoute
   '/semana-6': typeof Semana6Route
   '/semana-7': typeof Semana7Route
+  '/tutor-ia': typeof TutorIaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/diagnostico-lectura'
+    | '/evaluacion-formativa'
     | '/ingresar'
     | '/juegos'
+    | '/lectura-adaptativa'
     | '/modulo-1'
     | '/modulo-2'
     | '/modulo-3'
@@ -131,11 +170,15 @@ export interface FileRouteTypes {
     | '/prueba-diagnostica'
     | '/semana-6'
     | '/semana-7'
+    | '/tutor-ia'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/diagnostico-lectura'
+    | '/evaluacion-formativa'
     | '/ingresar'
     | '/juegos'
+    | '/lectura-adaptativa'
     | '/modulo-1'
     | '/modulo-2'
     | '/modulo-3'
@@ -144,11 +187,15 @@ export interface FileRouteTypes {
     | '/prueba-diagnostica'
     | '/semana-6'
     | '/semana-7'
+    | '/tutor-ia'
   id:
     | '__root__'
     | '/'
+    | '/diagnostico-lectura'
+    | '/evaluacion-formativa'
     | '/ingresar'
     | '/juegos'
+    | '/lectura-adaptativa'
     | '/modulo-1'
     | '/modulo-2'
     | '/modulo-3'
@@ -157,12 +204,16 @@ export interface FileRouteTypes {
     | '/prueba-diagnostica'
     | '/semana-6'
     | '/semana-7'
+    | '/tutor-ia'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DiagnosticoLecturaRoute: typeof DiagnosticoLecturaRoute
+  EvaluacionFormativaRoute: typeof EvaluacionFormativaRoute
   IngresarRoute: typeof IngresarRoute
   JuegosRoute: typeof JuegosRoute
+  LecturaAdaptativaRoute: typeof LecturaAdaptativaRoute
   Modulo1Route: typeof Modulo1Route
   Modulo2Route: typeof Modulo2Route
   Modulo3Route: typeof Modulo3Route
@@ -171,10 +222,18 @@ export interface RootRouteChildren {
   PruebaDiagnosticaRoute: typeof PruebaDiagnosticaRoute
   Semana6Route: typeof Semana6Route
   Semana7Route: typeof Semana7Route
+  TutorIaRoute: typeof TutorIaRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tutor-ia': {
+      id: '/tutor-ia'
+      path: '/tutor-ia'
+      fullPath: '/tutor-ia'
+      preLoaderRoute: typeof TutorIaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/semana-7': {
       id: '/semana-7'
       path: '/semana-7'
@@ -231,6 +290,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Modulo1RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lectura-adaptativa': {
+      id: '/lectura-adaptativa'
+      path: '/lectura-adaptativa'
+      fullPath: '/lectura-adaptativa'
+      preLoaderRoute: typeof LecturaAdaptativaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/juegos': {
       id: '/juegos'
       path: '/juegos'
@@ -245,6 +311,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IngresarRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/evaluacion-formativa': {
+      id: '/evaluacion-formativa'
+      path: '/evaluacion-formativa'
+      fullPath: '/evaluacion-formativa'
+      preLoaderRoute: typeof EvaluacionFormativaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/diagnostico-lectura': {
+      id: '/diagnostico-lectura'
+      path: '/diagnostico-lectura'
+      fullPath: '/diagnostico-lectura'
+      preLoaderRoute: typeof DiagnosticoLecturaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -257,8 +337,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DiagnosticoLecturaRoute: DiagnosticoLecturaRoute,
+  EvaluacionFormativaRoute: EvaluacionFormativaRoute,
   IngresarRoute: IngresarRoute,
   JuegosRoute: JuegosRoute,
+  LecturaAdaptativaRoute: LecturaAdaptativaRoute,
   Modulo1Route: Modulo1Route,
   Modulo2Route: Modulo2Route,
   Modulo3Route: Modulo3Route,
@@ -267,6 +350,7 @@ const rootRouteChildren: RootRouteChildren = {
   PruebaDiagnosticaRoute: PruebaDiagnosticaRoute,
   Semana6Route: Semana6Route,
   Semana7Route: Semana7Route,
+  TutorIaRoute: TutorIaRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

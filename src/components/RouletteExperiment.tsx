@@ -73,8 +73,10 @@ export function RouletteExperiment({ playerName, soundOn }: Props) {
   function playBlip() {
     if (!soundOn) return;
     try {
-      const ctx = new (window.AudioContext ||
-        (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+      const ctx = new (
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
+      )();
       const o = ctx.createOscillator();
       const g = ctx.createGain();
       o.frequency.value = 420;
@@ -271,12 +273,12 @@ function PredictionPhase({
     <div className="animate-bounce-in space-y-5">
       <Bubble>
         <p className="text-lg md:text-xl text-institutional-deep font-medium">
-          {greeting} Mira mi ruleta: tiene <strong>8 casillas</strong> — 4 turquesas 🐠,
-          3 doradas 🌟 y solo 1 coral 🍓.
+          {greeting} Mira mi ruleta: tiene <strong>8 casillas</strong> — 4 turquesas 🐠, 3 doradas
+          🌟 y solo 1 coral 🍓.
         </p>
         <p className="mt-3 text-institutional-deep text-lg">
-          Vamos a girarla <strong>{TOTAL_SPINS} veces</strong>. ¿Qué color crees que
-          saldrá <strong>más veces</strong>?
+          Vamos a girarla <strong>{TOTAL_SPINS} veces</strong>. ¿Qué color crees que saldrá{" "}
+          <strong>más veces</strong>?
         </p>
       </Bubble>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -344,9 +346,7 @@ function PlayPhase({
       </div>
 
       <div className="card-soft p-5 bg-cream">
-        <div className="text-xs font-bold uppercase tracking-widest text-coral">
-          Libreta de Bú
-        </div>
+        <div className="text-xs font-bold uppercase tracking-widest text-coral">Libreta de Bú</div>
         <div className="mt-3 space-y-3">
           {COLORS.map((c) => (
             <TallyRow key={c.id} def={c} count={counts[c.id]} />
@@ -414,8 +414,8 @@ function ResultPhase({
             : "Esta vez el azar te sorprendió. Pero fíjate: entre más casillas tiene un color, más probable es que salga."}
         </p>
         <p className="mt-2 text-institutional-deep text-sm">
-          💡 Turquesa tiene 4 casillas de 8, ¡la mitad de la ruleta! Por eso suele ganar.
-          Coral solo tiene 1, por eso es el <strong>menos probable</strong>.
+          💡 Turquesa tiene 4 casillas de 8, ¡la mitad de la ruleta! Por eso suele ganar. Coral solo
+          tiene 1, por eso es el <strong>menos probable</strong>.
         </p>
       </Bubble>
 

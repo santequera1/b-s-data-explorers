@@ -55,9 +55,7 @@ function Semana7() {
         <h1 className="mt-2 text-3xl md:text-5xl font-display font-bold text-institutional-deep">
           La Ruleta de la Suerte
         </h1>
-        <p className="mt-2 text-lg text-muted-foreground">
-          ¿Qué color es más probable? 🎡
-        </p>
+        <p className="mt-2 text-lg text-muted-foreground">¿Qué color es más probable? 🎡</p>
       </section>
 
       <section className="px-4 md:px-6 pb-16">

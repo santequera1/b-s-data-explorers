@@ -16,6 +16,11 @@ export const Route = createFileRoute("/panel")({
 });
 
 const ACTIVIDADES: { id: string; label: string; icon: string }[] = [
+  { id: "diag-lectura", label: "Diag. Lectura", icon: "🧭" },
+  { id: "tutor-tutor_reto_1", label: "IA · Reto 1", icon: "💡" },
+  { id: "tutor-tutor_reto_2", label: "IA · Reto 2", icon: "🤖" },
+  { id: "tutor-tutor_reto_3", label: "IA · Reto 3", icon: "🌱" },
+  { id: "eval-formativa-lectura", label: "Examen Lectura", icon: "📝" },
   { id: "modulo-1", label: "M1 · Datos", icon: "🥭" },
   { id: "modulo-2", label: "M2 · Gráficos", icon: "🏪" },
   { id: "modulo-3", label: "M3 · Moda", icon: "🧃" },
@@ -36,12 +41,17 @@ function PanelPage() {
   const filas = data.estudiantes.map((e) => {
     const completadas = ACTIVIDADES.filter((a) => e.actividades[a.id]).length;
     const notas = ACTIVIDADES.map((a) => e.actividades[a.id]?.nota).filter(
-      (n): n is number => n !== undefined
+      (n): n is number => n !== undefined,
     );
     const promedio = notas.length
       ? Math.round(notas.reduce((s, n) => s + n, 0) / notas.length)
       : null;
-    return { ...e, completadas, promedio, pct: Math.round((completadas / ACTIVIDADES.length) * 100) };
+    return {
+      ...e,
+      completadas,
+      promedio,
+      pct: Math.round((completadas / ACTIVIDADES.length) * 100),
+    };
   });
 
   const totalActivos = filas.filter((f) => f.completadas > 0).length;
@@ -223,9 +233,8 @@ function PanelPage() {
           </table>
         </div>
         <p className="mt-3 text-xs text-muted-foreground">
-          La nota de cada actividad es la mejor obtenida por el estudiante (0–100, descuenta
-          errores durante el juego). Las respuestas de la encuesta TIC se consultan en Google
-          Forms.
+          La nota de cada actividad es la mejor obtenida por el estudiante (0–100, descuenta errores
+          durante el juego). Las respuestas de la encuesta TIC se consultan en Google Forms.
         </p>
       </section>
 
@@ -284,10 +293,12 @@ function SeccionDiagnostico({ estudiantes }: { estudiantes: EstudianteConDiagnos
   function aciertoPorItem(momento: Momento) {
     const presentes = estudiantes.filter((e) => e.diagnostico[momento]);
     return itemsEvaluables.map((item) => {
-      const ok = presentes.filter(
-        (e) => e.diagnostico[momento]!.evaluacion.porItem[item.n]
-      ).length;
-      return { n: item.n, dim: item.dim, pct: presentes.length ? Math.round((ok / presentes.length) * 100) : null };
+      const ok = presentes.filter((e) => e.diagnostico[momento]!.evaluacion.porItem[item.n]).length;
+      return {
+        n: item.n,
+        dim: item.dim,
+        pct: presentes.length ? Math.round((ok / presentes.length) * 100) : null,
+      };
     });
   }
 
@@ -319,7 +330,7 @@ function SeccionDiagnostico({ estudiantes }: { estudiantes: EstudianteConDiagnos
           d.fecha.slice(0, 10),
           pct(d.evaluacion.total.ok, d.evaluacion.total.total),
           ...(["d1", "d2", "d3"] as Dimension[]).map((dim) =>
-            pct(d.evaluacion.porDimension[dim].ok, d.evaluacion.porDimension[dim].total)
+            pct(d.evaluacion.porDimension[dim].ok, d.evaluacion.porDimension[dim].total),
           ),
           ...itemsEvaluables.map((i) => (d.evaluacion.porItem[i.n] ? 1 : 0)),
           d.abiertas.i19,
@@ -350,8 +361,8 @@ function SeccionDiagnostico({ estudiantes }: { estudiantes: EstudianteConDiagnos
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">
             Presentaron: <strong>{presentaronPre.length}</strong> la prueba inicial ·{" "}
-            <strong>{presentaronPost.length}</strong> la prueba final. Enlace para
-            compartir la prueba final:{" "}
+            <strong>{presentaronPost.length}</strong> la prueba final. Enlace para compartir la
+            prueba final:{" "}
             <code className="bg-institutional/10 rounded px-1.5 py-0.5 text-xs">
               /prueba-diagnostica?momento=post
             </code>
@@ -450,15 +461,18 @@ function SeccionDiagnostico({ estudiantes }: { estudiantes: EstudianteConDiagnos
             📊 Porcentaje de acierto por ítem
           </h3>
           <p className="text-xs text-muted-foreground mb-3">
-            D1 = {DIMENSIONES.d1} · D2 = {DIMENSIONES.d2} · D3 = {DIMENSIONES.d3}. Los
-            ítems 19 y 24 son abiertos (valoración con rúbrica).
+            D1 = {DIMENSIONES.d1} · D2 = {DIMENSIONES.d2} · D3 = {DIMENSIONES.d3}. Los ítems 19 y 24
+            son abiertos (valoración con rúbrica).
           </p>
           <table className="text-xs min-w-[640px]">
             <thead>
               <tr>
                 <th className="text-left pr-3 py-1 font-semibold text-muted-foreground">Ítem</th>
                 {itemsPre.map((it) => (
-                  <th key={it.n} className="px-1.5 py-1 text-center font-bold text-institutional-deep">
+                  <th
+                    key={it.n}
+                    className="px-1.5 py-1 text-center font-bold text-institutional-deep"
+                  >
                     {it.n}
                     <div className="text-[9px] font-semibold text-turquoise">
                       {it.dim.toUpperCase()}

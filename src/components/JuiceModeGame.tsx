@@ -57,10 +57,10 @@ export function JuiceModeGame() {
   }, [revealed, sequence]);
 
   const moda = (Object.entries(targets) as [JuiceId, number][]).reduce((a, b) =>
-    b[1] > a[1] ? b : a
+    b[1] > a[1] ? b : a,
   )[0];
   const menor = (Object.entries(targets) as [JuiceId, number][]).reduce((a, b) =>
-    b[1] < a[1] ? b : a
+    b[1] < a[1] ? b : a,
   )[0];
   const maxCount = Math.max(...Object.values(targets));
 
@@ -102,13 +102,13 @@ export function JuiceModeGame() {
               <div className="animate-bounce-in space-y-5">
                 <Bubble>
                   <p className="text-lg md:text-xl text-institutional-deep font-medium">
-                    ¡El kiosco del recreo solo puede vender <strong>un jugo</strong>! 🧃
-                    Para elegirlo, todo el salón votó por su favorito.
+                    ¡El kiosco del recreo solo puede vender <strong>un jugo</strong>! 🧃 Para
+                    elegirlo, todo el salón votó por su favorito.
                   </p>
                   <p className="mt-3 text-institutional-deep text-lg">
-                    El jugo ganador será el <strong>Jugo Estrella</strong> ⭐ — en
-                    estadística, el dato que más se repite se llama{" "}
-                    <strong>la moda</strong>. ¡Contemos los votos y encontrémosla!
+                    El jugo ganador será el <strong>Jugo Estrella</strong> ⭐ — en estadística, el
+                    dato que más se repite se llama <strong>la moda</strong>. ¡Contemos los votos y
+                    encontrémosla!
                   </p>
                 </Bubble>
                 <button onClick={() => setPhase("votacion")} className="btn-primary text-lg">
@@ -125,9 +125,8 @@ export function JuiceModeGame() {
                       <>¡Todos los votos contados! 🎉 Mira cómo quedó la gráfica.</>
                     ) : (
                       <>
-                        Toca <strong>«Sacar voto»</strong> para leer cada papelito de la
-                        urna. La gráfica crece sola: tú concéntrate en{" "}
-                        <strong>observar</strong>. 👀
+                        Toca <strong>«Sacar voto»</strong> para leer cada papelito de la urna. La
+                        gráfica crece sola: tú concéntrate en <strong>observar</strong>. 👀
                       </>
                     )}
                   </p>
@@ -144,7 +143,10 @@ export function JuiceModeGame() {
                   </div>
                   <div className="grid grid-cols-3 gap-6 items-end" style={{ height: 220 }}>
                     {JUICES.map((j) => (
-                      <div key={j.id} className="flex flex-col items-center justify-end h-full gap-1">
+                      <div
+                        key={j.id}
+                        className="flex flex-col items-center justify-end h-full gap-1"
+                      >
                         <div className="font-display font-bold text-xl text-institutional-deep">
                           {counts[j.id]}
                         </div>
@@ -166,7 +168,10 @@ export function JuiceModeGame() {
 
                 {!allRevealed ? (
                   <div className="flex items-center gap-4">
-                    <button onClick={() => setRevealed((r) => r + 1)} className="btn-primary text-lg">
+                    <button
+                      onClick={() => setRevealed((r) => r + 1)}
+                      className="btn-primary text-lg"
+                    >
                       🗳️ Sacar voto
                     </button>
                     {revealed > 0 && (
@@ -177,7 +182,10 @@ export function JuiceModeGame() {
                     )}
                   </div>
                 ) : (
-                  <button onClick={() => setPhase("preguntas")} className="btn-primary animate-bounce-in">
+                  <button
+                    onClick={() => setPhase("preguntas")}
+                    className="btn-primary animate-bounce-in"
+                  >
                     🔍 Analizar los resultados
                   </button>
                 )}
@@ -296,9 +304,9 @@ export function JuiceModeGame() {
                     con <strong>{targets[moda]} votos</strong>!
                   </p>
                   <p className="mt-2 text-institutional-deep">
-                    Ya sabes el secreto: la <strong>moda</strong> es el dato que más se
-                    repite en un conjunto. Los exploradores de datos la usan para tomar
-                    decisiones — como qué jugo vender en el kiosco. 🧃
+                    Ya sabes el secreto: la <strong>moda</strong> es el dato que más se repite en un
+                    conjunto. Los exploradores de datos la usan para tomar decisiones — como qué
+                    jugo vender en el kiosco. 🧃
                   </p>
                 </Bubble>
                 <div className="flex flex-wrap gap-3">

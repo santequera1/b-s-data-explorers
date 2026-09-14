@@ -70,19 +70,35 @@ function PruebaPage() {
     subs.every((s) => subVal(key, s) !== undefined && subVal(key, s) !== null);
 
   const completa: Record<number, boolean> = {
-    1: r.i1 !== undefined && tablaCompleta("i2", FRUTAS.map((f) => f.id)) && r.i3 !== undefined && r.i4 !== undefined,
+    1:
+      r.i1 !== undefined &&
+      tablaCompleta(
+        "i2",
+        FRUTAS.map((f) => f.id),
+      ) &&
+      r.i3 !== undefined &&
+      r.i4 !== undefined,
     2:
       r.i5 !== undefined &&
       r.i6 !== undefined &&
       r.i7 !== undefined &&
       r.i8 !== undefined &&
-      tablaCompleta("i9", TRANSPORTES.map((t) => t.id)),
+      tablaCompleta(
+        "i9",
+        TRANSPORTES.map((t) => t.id),
+      ),
     3: r.i10 !== undefined && r.i11 !== undefined && r.i12 !== undefined && r.i13 !== undefined,
     4: r.i14 !== undefined && r.i15 !== undefined && r.i16 !== undefined,
     5: r.i17 !== undefined && r.i18 !== undefined && String(r.i19 ?? "").trim().length > 0,
     6:
-      tablaCompleta("i20", MASCOTAS.map((m) => m.id)) &&
-      tablaCompleta("i21", MASCOTAS.map((m) => m.id)) &&
+      tablaCompleta(
+        "i20",
+        MASCOTAS.map((m) => m.id),
+      ) &&
+      tablaCompleta(
+        "i21",
+        MASCOTAS.map((m) => m.id),
+      ) &&
       r.i22 !== undefined &&
       r.i23 !== undefined &&
       String(r.i24 ?? "").trim().length > 0,
@@ -159,26 +175,26 @@ function PruebaPage() {
             </p>
             <div className="card-soft p-6 md:p-8 mt-6 text-left max-w-xl mx-auto">
               <p className="text-institutional-deep text-lg">
-                ¡Hola, {data.session.nombre.split(" ")[0]}! Esta no es una prueba para
-                ganar o perder: es para <strong>descubrir cuánto sabes</strong> y ayudarte
-                a aprender mejor.
+                ¡Hola, {data.session.nombre.split(" ")[0]}! Esta no es una prueba para ganar o
+                perder: es para <strong>descubrir cuánto sabes</strong> y ayudarte a aprender mejor.
               </p>
               <ul className="mt-4 space-y-2 text-institutional-deep">
-                <li>🧩 Son <strong>6 situaciones</strong> con preguntas cortas.</li>
+                <li>
+                  🧩 Son <strong>6 situaciones</strong> con preguntas cortas.
+                </li>
                 <li>👀 Observa, analiza y responde con atención.</li>
                 <li>🤫 Trabaja solo(a), sin ayuda de tus compañeros.</li>
                 <li>🏆 ¡Tú puedes!</li>
               </ul>
               {yaPresentada && !esDocente && (
                 <p className="mt-4 text-sm font-semibold text-coral">
-                  ⚠️ Ya presentaste esta prueba. Puedes repasarla, pero la que cuenta para
-                  tu profe es la primera que enviaste.
+                  ⚠️ Ya presentaste esta prueba. Puedes repasarla, pero la que cuenta para tu profe
+                  es la primera que enviaste.
                 </p>
               )}
               {esDocente && (
                 <p className="mt-4 text-sm font-semibold text-turquoise">
-                  👩‍🏫 Modo docente: puedes recorrer la prueba, tus respuestas no se
-                  guardarán.
+                  👩‍🏫 Modo docente: puedes recorrer la prueba, tus respuestas no se guardarán.
                 </p>
               )}
             </div>
@@ -189,10 +205,13 @@ function PruebaPage() {
         )}
 
         {pantalla === 1 && (
-          <Situacion titulo="I. Recolección y organización de datos" sub="Situación 1: La fruta favorita del salón">
+          <Situacion
+            titulo="I. Recolección y organización de datos"
+            sub="Situación 1: La fruta favorita del salón"
+          >
             <Enunciado>
-              La profesora preguntó a los estudiantes cuál era su fruta favorita. Estas
-              fueron las respuestas:
+              La profesora preguntó a los estudiantes cuál era su fruta favorita. Estas fueron las
+              respuestas:
             </Enunciado>
             <div className="card-soft p-4 bg-cream text-3xl md:text-4xl leading-relaxed text-center tracking-wide">
               {FRUTAS_SECUENCIA.map((f, i) => (
@@ -242,7 +261,10 @@ function PruebaPage() {
         )}
 
         {pantalla === 2 && (
-          <Situacion titulo="II. Representación e interpretación de datos" sub="Situación 2: Medios de transporte para ir al colegio">
+          <Situacion
+            titulo="II. Representación e interpretación de datos"
+            sub="Situación 2: Medios de transporte para ir al colegio"
+          >
             <Enunciado>Resultados de la encuesta:</Enunciado>
             <div className="grid md:grid-cols-2 gap-4">
               <div className="card-soft p-4 bg-cream">
@@ -261,7 +283,11 @@ function PruebaPage() {
                   </div>
                 ))}
               </div>
-              <BarChart datos={TRANSPORTES.map((t) => ({ label: t.icon, n: t.n }))} max={12} titulo="Medios de transporte" />
+              <BarChart
+                datos={TRANSPORTES.map((t) => ({ label: t.icon, n: t.n }))}
+                max={12}
+                titulo="Medios de transporte"
+              />
             </div>
 
             <Pregunta n={5} texto="¿Cuál fue el medio de transporte más utilizado?">
@@ -324,7 +350,11 @@ function PruebaPage() {
                   </div>
                 ))}
               </div>
-              <BarChart datos={LIBROS.map((l) => ({ label: l.icon, n: l.n }))} max={12} titulo="Libros favoritos" />
+              <BarChart
+                datos={LIBROS.map((l) => ({ label: l.icon, n: l.n }))}
+                max={12}
+                titulo="Libros favoritos"
+              />
             </div>
 
             <Pregunta n={10} texto="¿Qué libro obtuvo más votos?">
@@ -345,7 +375,11 @@ function PruebaPage() {
               />
             </Pregunta>
             <Pregunta n={13} texto="¿Cuántos votos suman Aventuras y Animales juntos?">
-              <NumOpciones opciones={[16, 18, 20, 22]} valor={r.i13} onPick={(v) => set("i13", v)} />
+              <NumOpciones
+                opciones={[16, 18, 20, 22]}
+                valor={r.i13}
+                onPick={(v) => set("i13", v)}
+              />
             </Pregunta>
 
             <Avanzar ok={completa[3]} onNext={() => setPantalla(4)} />
@@ -366,7 +400,7 @@ function PruebaPage() {
                           className="inline-block w-7 h-7 rounded-full shadow-inner"
                           style={{ background: f.color }}
                         />
-                      ))
+                      )),
                     )}
                   </div>
                   <div className="mt-2 text-center text-xs font-bold text-muted-foreground uppercase tracking-wider">
@@ -375,8 +409,14 @@ function PruebaPage() {
                 </div>
                 <ul className="space-y-2">
                   {FICHAS.map((f) => (
-                    <li key={f.id} className="flex items-center gap-2 font-semibold text-institutional-deep">
-                      <span className="w-5 h-5 rounded-full inline-block" style={{ background: f.color }} />
+                    <li
+                      key={f.id}
+                      className="flex items-center gap-2 font-semibold text-institutional-deep"
+                    >
+                      <span
+                        className="w-5 h-5 rounded-full inline-block"
+                        style={{ background: f.color }}
+                      />
                       {f.n} {f.n === 1 ? "ficha" : "fichas"} {f.label.toLowerCase()}
                       {f.n === 1 ? "" : "s"}
                     </li>
@@ -385,7 +425,10 @@ function PruebaPage() {
               </div>
             </div>
 
-            <Pregunta n={14} texto="Si sacas una ficha sin mirar, ¿cuál color tiene MAYOR probabilidad de salir?">
+            <Pregunta
+              n={14}
+              texto="Si sacas una ficha sin mirar, ¿cuál color tiene MAYOR probabilidad de salir?"
+            >
               <Opciones
                 opciones={[
                   { v: "azul", label: "🔵 Azul" },
@@ -409,7 +452,10 @@ function PruebaPage() {
                 onPick={(v) => set("i15", v)}
               />
             </Pregunta>
-            <Pregunta n={16} texto="Si agregamos 5 fichas verdes a la bolsa, ¿qué color sería ahora el MÁS probable?">
+            <Pregunta
+              n={16}
+              texto="Si agregamos 5 fichas verdes a la bolsa, ¿qué color sería ahora el MÁS probable?"
+            >
               <Opciones
                 opciones={[
                   { v: "roja", label: "🔴 Roja" },
@@ -472,10 +518,12 @@ function PruebaPage() {
         )}
 
         {pantalla === 6 && (
-          <Situacion titulo="VI. Construyo mi propia gráfica" sub="Encuesta en mi salón: la mascota favorita">
+          <Situacion
+            titulo="VI. Construyo mi propia gráfica"
+            sub="Encuesta en mi salón: la mascota favorita"
+          >
             <Enunciado>
-              Preguntamos a 10 compañeros cuál es su mascota favorita. Estas fueron sus
-              respuestas:
+              Preguntamos a 10 compañeros cuál es su mascota favorita. Estas fueron sus respuestas:
             </Enunciado>
             <div className="card-soft p-4 bg-cream text-3xl md:text-4xl leading-relaxed text-center tracking-wide">
               {MASCOTAS_SECUENCIA.map((m, i) => (
@@ -506,7 +554,10 @@ function PruebaPage() {
                   {MASCOTAS.map((m) => {
                     const v = Number(subVal("i21", m.id) ?? 0);
                     return (
-                      <div key={m.id} className="flex flex-col items-center justify-end h-full gap-1.5">
+                      <div
+                        key={m.id}
+                        className="flex flex-col items-center justify-end h-full gap-1.5"
+                      >
                         <div className="font-display font-bold text-institutional-deep">{v}</div>
                         <div
                           className="w-full max-w-14 rounded-t-lg bg-gradient-to-b from-turquoise to-institutional transition-all duration-300"
@@ -586,22 +637,20 @@ function PruebaPage() {
             <div className="card-soft p-6 mt-6 max-w-lg mx-auto">
               {resultadoEnvio === "ok" && (
                 <p className="text-lg text-institutional-deep">
-                  ¡Lo lograste, {data.session.nombre.split(" ")[0]}! 🏅 Tus respuestas
-                  quedaron guardadas y tu profe las revisará. Ahora sí… ¡a jugar y
-                  aprender!
+                  ¡Lo lograste, {data.session.nombre.split(" ")[0]}! 🏅 Tus respuestas quedaron
+                  guardadas y tu profe las revisará. Ahora sí… ¡a jugar y aprender!
                 </p>
               )}
               {resultadoEnvio === "repetida" && (
                 <p className="text-lg text-institutional-deep">
-                  ¡Buen repaso! Recuerda que la prueba que cuenta es la{" "}
-                  <strong>primera</strong> que enviaste — esta práctica no reemplaza tus
-                  respuestas.
+                  ¡Buen repaso! Recuerda que la prueba que cuenta es la <strong>primera</strong> que
+                  enviaste — esta práctica no reemplaza tus respuestas.
                 </p>
               )}
               {resultadoEnvio === "preview" && (
                 <p className="text-lg text-institutional-deep">
-                  Recorriste la prueba en modo docente: no se guardó ningún dato. Los
-                  resultados de tus estudiantes aparecen en el panel.
+                  Recorriste la prueba en modo docente: no se guardó ningún dato. Los resultados de
+                  tus estudiantes aparecen en el panel.
                 </p>
               )}
             </div>
@@ -650,15 +699,7 @@ function Enunciado({ children }: { children: React.ReactNode }) {
   return <p className="text-institutional-deep text-lg">{children}</p>;
 }
 
-function Pregunta({
-  n,
-  texto,
-  children,
-}: {
-  n: number;
-  texto: string;
-  children: React.ReactNode;
-}) {
+function Pregunta({ n, texto, children }: { n: number; texto: string; children: React.ReactNode }) {
   return (
     <div className="card-soft p-5">
       <p className="font-display font-bold text-institutional-deep mb-3">
@@ -786,7 +827,10 @@ function BarChart({
       <div className="text-xs font-bold uppercase tracking-widest text-turquoise mb-2">
         {titulo}
       </div>
-      <div className="grid gap-3 items-end" style={{ gridTemplateColumns: `repeat(${datos.length}, 1fr)`, height: 180 }}>
+      <div
+        className="grid gap-3 items-end"
+        style={{ gridTemplateColumns: `repeat(${datos.length}, 1fr)`, height: 180 }}
+      >
         {datos.map((d, i) => (
           <div key={i} className="flex flex-col items-center justify-end h-full gap-1">
             <div className="font-display font-bold text-sm text-institutional-deep">{d.n}</div>
@@ -813,7 +857,12 @@ function RuletaSVG({ nombre, amarillo }: { nombre: string; amarillo: number }) {
   }
   return (
     <div className="card-soft p-4 text-center">
-      <svg viewBox={`0 0 ${size} ${size}`} width="100%" style={{ maxWidth: 150 }} className="mx-auto">
+      <svg
+        viewBox={`0 0 ${size} ${size}`}
+        width="100%"
+        style={{ maxWidth: 150 }}
+        className="mx-auto"
+      >
         {[0, 1, 2, 3].map((i) => (
           <path
             key={i}

@@ -39,12 +39,12 @@ export const getSession = createServerFn({ method: "GET" }).handler(
     const store = await import("./server/store");
     const { getCookie } = await import("@tanstack/react-start/server");
     return store.verifySession(getCookie(COOKIE));
-  }
+  },
 );
 
 export const saveProgress = createServerFn({ method: "POST" })
   .inputValidator(
-    (d: { actividad: string; nota: number; intentos?: number; detalle?: string }) => d
+    (d: { actividad: string; nota: number; intentos?: number; detalle?: string }) => d,
   )
   .handler(async ({ data }) => {
     const store = await import("./server/store");
@@ -72,9 +72,10 @@ export const getMyProgress = createServerFn({ method: "GET" }).handler(async () 
   const session = store.verifySession(getCookie(COOKIE));
   if (!session) return null;
   const progress = store.readJson<import("./server/store").ProgressMap>("progress.json", {});
-  const diagnosticos = store.readJson<
-    Record<string, Partial<Record<"pre" | "post", unknown>>>
-  >("diagnosticos.json", {});
+  const diagnosticos = store.readJson<Record<string, Partial<Record<"pre" | "post", unknown>>>>(
+    "diagnosticos.json",
+    {},
+  );
   const mine = diagnosticos[session.usuario] ?? {};
   return {
     session,
@@ -105,7 +106,7 @@ export const saveDiagnostico = createServerFn({ method: "POST" })
       momento: Momento;
       respuestas: Record<string, RespuestaValor>;
       abiertas: { i19: string; i24: string };
-    }) => d
+    }) => d,
   )
   .handler(async ({ data }) => {
     const store = await import("./server/store");
@@ -174,3 +175,109 @@ export const getPanelData = createServerFn({ method: "GET" }).handler(async () =
       })),
   };
 });
+
+/* ---------- Módulo Comprensión Lectora e IA ---------- */
+
+export const consultarTutorIA = createServerFn({ method: "POST" })
+  .inputValidator((d: { retoId: string; respuesta: string; pistasUsadas?: number }) => d)
+  .handler(async ({ data }) => {
+    const { evaluarRespuestaConIA } = await import("./ia-tutor");
+    const feedback = await evaluarRespuestaConIA(
+      data.retoId,
+      data.respuesta,
+      data.pistasUsadas ?? 0,
+    );
+
+    const store = await import("./server/store");
+    const { getCookie } = await import("@tanstack/react-start/server");
+    const session = store.verifySession(getCookie(COOKIE));
+    if (session && session.rol === "estudiante") {
+      const progress = store.readJson<import("./server/store").ProgressMap>("progress.json", {});
+      const mine = progress[session.usuario] ?? {};
+      const key = `tutor-${data.retoId}`;
+      const prev = mine[key];
+      mine[key] = {
+        nota: Math.max(prev?.nota ?? 0, feedback.puntos),
+        intentos: (prev?.intentos ?? 0) + 1,
+        detalle: `${feedback.nivelLogro} - ${feedback.correcto ? "Superado" : "En andamiaje"}`,
+        fecha: new Date().toISOString(),
+      };
+      progress[session.usuario] = mine;
+      store.writeJson("progress.json", progress);
+    }
+    return feedback;
+  });
+
+export const saveDiagnosticoLectura = createServerFn({ method: "POST" })
+  .inputValidator(
+    (d: {
+      respuestas: Record<string, string>;
+      desglose: {
+        literal: number;
+        inferencial: number;
+        critico: number;
+        total: number;
+        porcentaje: number;
+      };
+      nivelAsignado: "explorador" | "aventurero" | "maestro";
+    }) => d,
+  )
+  .handler(async ({ data }) => {
+    const store = await import("./server/store");
+    const { getCookie } = await import("@tanstack/react-start/server");
+    const session = store.verifySession(getCookie(COOKIE));
+    const usuario = session?.usuario || "invitado";
+    const diagLectura = store.readJson<Record<string, unknown>>("diagnostico_lectura.json", {});
+    diagLectura[usuario] = {
+      fecha: new Date().toISOString(),
+      nombre: session?.nombre || "Estudiante",
+      ...data,
+    };
+    store.writeJson("diagnostico_lectura.json", diagLectura);
+
+    if (session && session.rol === "estudiante") {
+      const progress = store.readJson<import("./server/store").ProgressMap>("progress.json", {});
+      const mine = progress[session.usuario] ?? {};
+      mine["diag-lectura"] = {
+        nota: data.desglose.porcentaje,
+        intentos: (mine["diag-lectura"]?.intentos ?? 0) + 1,
+        detalle: `Nivel asignado: ${data.nivelAsignado.toUpperCase()} (${data.desglose.total}/10)`,
+        fecha: new Date().toISOString(),
+      };
+      progress[session.usuario] = mine;
+      store.writeJson("progress.json", progress);
+    }
+    return { ok: true, nivelAsignado: data.nivelAsignado };
+  });
+
+export const saveEvaluacionLectura = createServerFn({ method: "POST" })
+  .inputValidator(
+    (d: {
+      nota: number;
+      desglose: {
+        literal: number;
+        inferencial: number;
+        critico: number;
+        total: number;
+      };
+      respuestas: Record<string, string>;
+    }) => d,
+  )
+  .handler(async ({ data }) => {
+    const store = await import("./server/store");
+    const { getCookie } = await import("@tanstack/react-start/server");
+    const session = store.verifySession(getCookie(COOKIE));
+    if (session && session.rol === "estudiante") {
+      const progress = store.readJson<import("./server/store").ProgressMap>("progress.json", {});
+      const mine = progress[session.usuario] ?? {};
+      mine["eval-formativa-lectura"] = {
+        nota: data.nota,
+        intentos: (mine["eval-formativa-lectura"]?.intentos ?? 0) + 1,
+        detalle: `L: ${data.desglose.literal}/4 · I: ${data.desglose.inferencial}/4 · C: ${data.desglose.critico}/2`,
+        fecha: new Date().toISOString(),
+      };
+      progress[session.usuario] = mine;
+      store.writeJson("progress.json", progress);
+    }
+    return { ok: true };
+  });

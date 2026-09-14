@@ -51,7 +51,10 @@ export function CoinExperiment({ playerName, soundOn }: Props) {
   function playBlip() {
     if (!soundOn) return;
     try {
-      const ctx = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+      const ctx = new (
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
+      )();
       const o = ctx.createOscillator();
       const g = ctx.createGain();
       o.frequency.value = 520;
@@ -140,12 +143,7 @@ export function CoinExperiment({ playerName, soundOn }: Props) {
             )}
 
             {phase === "resultado" && prediction && (
-              <ResultPhase
-                caras={caras}
-                sellos={sellos}
-                prediction={prediction}
-                onReset={reset}
-              />
+              <ResultPhase caras={caras} sellos={sellos} prediction={prediction} onReset={reset} />
             )}
           </div>
         </div>
@@ -165,13 +163,7 @@ function Bubble({ children }: { children: React.ReactNode }) {
   );
 }
 
-function PredictionPhase({
-  greeting,
-  onPick,
-}: {
-  greeting: string;
-  onPick: (r: Range) => void;
-}) {
+function PredictionPhase({ greeting, onPick }: { greeting: string; onPick: (r: Range) => void }) {
   return (
     <div className="animate-bounce-in space-y-5">
       <Bubble>
@@ -193,9 +185,7 @@ function PredictionPhase({
             <div className="text-xs font-bold uppercase tracking-wider text-turquoise">
               Mi predicción
             </div>
-            <div className="font-display font-bold text-xl text-institutional-deep">
-              {r.label}
-            </div>
+            <div className="font-display font-bold text-xl text-institutional-deep">{r.label}</div>
           </button>
         ))}
       </div>
@@ -252,9 +242,7 @@ function PlayPhase({
 
       {/* Notebook */}
       <div className="card-soft p-5 bg-cream">
-        <div className="text-xs font-bold uppercase tracking-widest text-coral">
-          Libreta de Bú
-        </div>
+        <div className="text-xs font-bold uppercase tracking-widest text-coral">Libreta de Bú</div>
         <div className="mt-3 space-y-3">
           <NotebookRow label="CARA" icon="🦉" count={caras} color="var(--turquoise)" />
           <NotebookRow label="SELLO" icon="✦" count={sellos} color="var(--gold)" />

@@ -55,9 +55,7 @@ function Semana6() {
         <h1 className="mt-2 text-3xl md:text-5xl font-display font-bold text-institutional-deep">
           Cara o Sello
         </h1>
-        <p className="mt-2 text-lg text-muted-foreground">
-          El gran experimento del azar 🪙
-        </p>
+        <p className="mt-2 text-lg text-muted-foreground">El gran experimento del azar 🪙</p>
       </section>
 
       <section className="px-4 md:px-6 pb-16">

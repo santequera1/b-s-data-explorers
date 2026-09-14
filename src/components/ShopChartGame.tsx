@@ -75,8 +75,8 @@ export function ShopChartGame() {
                 <Bubble>
                   <p className="text-lg md:text-xl text-institutional-deep font-medium">
                     ¡Doña Marta, la de la tienda escolar, nos contrató como{" "}
-                    <strong>consultores de datos</strong>! 🏪 Quiere saber qué se vendió
-                    más esta semana para surtir mejor la tienda.
+                    <strong>consultores de datos</strong>! 🏪 Quiere saber qué se vendió más esta
+                    semana para surtir mejor la tienda.
                   </p>
                   <p className="mt-3 text-institutional-deep">
                     Esta es su tabla de ventas. Nuestra misión: convertirla en{" "}
@@ -94,15 +94,18 @@ export function ShopChartGame() {
               <div className="animate-bounce-in space-y-5">
                 <Bubble>
                   <p className="text-lg text-institutional-deep">
-                    Usa los botones <strong>+</strong> y <strong>−</strong> para que cada
-                    barra llegue justo hasta el número de ventas de la tabla. 👇
+                    Usa los botones <strong>+</strong> y <strong>−</strong> para que cada barra
+                    llegue justo hasta el número de ventas de la tabla. 👇
                   </p>
                 </Bubble>
                 <SalesTable compact />
                 <div className="card-soft p-5">
                   <div className="grid grid-cols-3 gap-6 items-end" style={{ height: 240 }}>
                     {PRODUCTS.map((p) => (
-                      <div key={p.id} className="flex flex-col items-center justify-end h-full gap-2">
+                      <div
+                        key={p.id}
+                        className="flex flex-col items-center justify-end h-full gap-2"
+                      >
                         <div className="font-display font-bold text-institutional-deep">
                           {bars[p.id]}
                         </div>
@@ -165,8 +168,8 @@ export function ShopChartGame() {
               <div className="animate-bounce-in space-y-5">
                 <Bubble>
                   <p className="text-lg text-institutional-deep">
-                    ¡Barras perfectas! Ahora un <strong>pictograma</strong>: dibujamos con
-                    símbolos. Pero atención a la <strong>escala</strong>:
+                    ¡Barras perfectas! Ahora un <strong>pictograma</strong>: dibujamos con símbolos.
+                    Pero atención a la <strong>escala</strong>:
                   </p>
                   <p className="mt-2 text-xl font-display font-bold text-institutional-deep text-center">
                     1 símbolo ⭐ = {ESCALA} ventas
@@ -184,7 +187,9 @@ export function ShopChartGame() {
                       </span>
                       <span className="flex gap-1 text-2xl min-w-32">
                         {Array.from({ length: pict[p.id] }).map((_, i) => (
-                          <span key={i} className="animate-bounce-in">⭐</span>
+                          <span key={i} className="animate-bounce-in">
+                            ⭐
+                          </span>
                         ))}
                       </span>
                       <span className="ml-auto flex gap-1.5">
@@ -232,8 +237,8 @@ export function ShopChartGame() {
               <div className="animate-bounce-in space-y-5">
                 <Bubble>
                   <p className="text-lg text-institutional-deep">
-                    ¡Pictograma con escala dominado! 🌟 Última parte de la consultoría:
-                    responder las preguntas de doña Marta.
+                    ¡Pictograma con escala dominado! 🌟 Última parte de la consultoría: responder
+                    las preguntas de doña Marta.
                   </p>
                 </Bubble>
 
@@ -262,7 +267,9 @@ export function ShopChartGame() {
                     ))}
                   </div>
                   {q1 && !q1Correct && (
-                    <p className="text-sm font-semibold text-coral">Mira cuál barra es la más alta 👀</p>
+                    <p className="text-sm font-semibold text-coral">
+                      Mira cuál barra es la más alta 👀
+                    </p>
                   )}
                 </div>
 
@@ -310,10 +317,10 @@ export function ShopChartGame() {
                 <Bubble>
                   <p className="text-lg text-institutional-deep">
                     🎉 ¡Consultoría entregada! Doña Marta ya sabe que los{" "}
-                    <strong>bolis 🍧 son su producto estrella</strong> y que debe surtir
-                    más. Hoy aprendiste a construir <strong>gráficos de barras</strong> y{" "}
-                    <strong>pictogramas con escala</strong> — las herramientas favoritas
-                    de los exploradores de datos.
+                    <strong>bolis 🍧 son su producto estrella</strong> y que debe surtir más. Hoy
+                    aprendiste a construir <strong>gráficos de barras</strong> y{" "}
+                    <strong>pictogramas con escala</strong> — las herramientas favoritas de los
+                    exploradores de datos.
                   </p>
                 </Bubble>
                 <div className="flex flex-wrap gap-3">

@@ -33,3 +33,15 @@ dist-ssr
 WhatsApp Video*.mp4
 cambios/
 data/
+
+# Archivos de credenciales y despliegue privado (NUNCA SUBIR A GIT)
+*PRIVADO*
+*credenciales*
+*Credenciales*
+DEPLOY_Y_CREDENCIALES*
+*.pem
+*.key
+.env
+.env.*
+!.env.example
+

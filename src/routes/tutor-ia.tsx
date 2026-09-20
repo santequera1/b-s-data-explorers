@@ -20,10 +20,10 @@ function TutorIAPage() {
     <main className="bg-paper min-h-screen pb-16">
       <header className="mx-auto max-w-5xl px-6 pt-6 pb-4 flex items-center justify-between">
         <Link
-          to="/"
+          to="/lectura"
           className="inline-flex items-center gap-2 text-sm font-semibold text-institutional-deep hover:text-coral transition-colors"
         >
-          ← Volver al inicio
+          ← Volver a Aventura Lectora
         </Link>
         <div className="flex items-center gap-2">
           <Link

@@ -43,5 +43,5 @@ DEPLOY_Y_CREDENCIALES*
 *.key
 .env
 .env.*
-!.env.example
+peticiones/
 

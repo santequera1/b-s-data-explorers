@@ -163,6 +163,9 @@ export const getPanelData = createServerFn({ method: "GET" }).handler(async () =
   const users = store.readJson<import("./server/store").User[]>("users.json", []);
   const progress = store.readJson<import("./server/store").ProgressMap>("progress.json", {});
   const diagnosticos = store.readJson<DiagnosticoMap>("diagnosticos.json", {});
+  const diagLectura = store.readJson<Record<string, any>>("diagnostico_lectura.json", {});
+  const asistencia = store.getAllAttendance();
+
   return {
     docente: session.nombre,
     estudiantes: users
@@ -170,9 +173,13 @@ export const getPanelData = createServerFn({ method: "GET" }).handler(async () =
       .map((u) => ({
         usuario: u.usuario,
         nombre: u.nombre,
+        activo: u.activo !== false,
+        creadoEn: u.creadoEn,
         actividades: progress[u.usuario] ?? {},
         diagnostico: diagnosticos[u.usuario] ?? {},
+        diagnosticoLectura: diagLectura[u.usuario] ?? null,
       })),
+    asistencia,
   };
 });
 
@@ -281,3 +288,125 @@ export const saveEvaluacionLectura = createServerFn({ method: "POST" })
     }
     return { ok: true };
   });
+
+/* ---------- Administración de Estudiantes (Docente) ---------- */
+
+export const crearEstudiante = createServerFn({ method: "POST" })
+  .inputValidator((d: { nombre: string; usuario: string; clave: string }) => d)
+  .handler(async ({ data }) => {
+    const store = await import("./server/store");
+    const { getCookie } = await import("@tanstack/react-start/server");
+    const session = store.verifySession(getCookie(COOKIE));
+    if (!session || session.rol !== "docente") {
+      return { ok: false, error: "No autorizado. Se requiere sesión docente." };
+    }
+    try {
+      const user = store.createUser(data.usuario, data.nombre, data.clave, "estudiante");
+      return { ok: true, usuario: user.usuario, nombre: user.nombre };
+    } catch (e: any) {
+      return { ok: false, error: e.message || "Error al crear estudiante." };
+    }
+  });
+
+export const actualizarEstudiante = createServerFn({ method: "POST" })
+  .inputValidator(
+    (d: { usuario: string; nombre?: string; clave?: string; activo?: boolean }) => d,
+  )
+  .handler(async ({ data }) => {
+    const store = await import("./server/store");
+    const { getCookie } = await import("@tanstack/react-start/server");
+    const session = store.verifySession(getCookie(COOKIE));
+    if (!session || session.rol !== "docente") {
+      return { ok: false, error: "No autorizado. Se requiere sesión docente." };
+    }
+    try {
+      const user = store.updateUser(data.usuario, {
+        nombre: data.nombre,
+        clave: data.clave,
+        activo: data.activo,
+      });
+      return { ok: true, usuario: user.usuario, nombre: user.nombre, activo: user.activo };
+    } catch (e: any) {
+      return { ok: false, error: e.message || "Error al actualizar estudiante." };
+    }
+  });
+
+export const eliminarEstudiante = createServerFn({ method: "POST" })
+  .inputValidator((d: { usuario: string }) => d)
+  .handler(async ({ data }) => {
+    const store = await import("./server/store");
+    const { getCookie } = await import("@tanstack/react-start/server");
+    const session = store.verifySession(getCookie(COOKIE));
+    if (!session || session.rol !== "docente") {
+      return { ok: false, error: "No autorizado. Se requiere sesión docente." };
+    }
+    try {
+      const ok = store.deleteUser(data.usuario);
+      return { ok };
+    } catch (e: any) {
+      return { ok: false, error: e.message || "Error al eliminar estudiante." };
+    }
+  });
+
+/* ---------- Control de Asistencia (Docente) ---------- */
+
+export const guardarAsistenciaDia = createServerFn({ method: "POST" })
+  .inputValidator(
+    (d: {
+      fecha: string;
+      tema?: string;
+      registros: Record<
+        string,
+        {
+          estado: import("./server/store").EstadoAsistencia;
+          observacion?: string;
+        }
+      >;
+    }) => d,
+  )
+  .handler(async ({ data }) => {
+    const store = await import("./server/store");
+    const { getCookie } = await import("@tanstack/react-start/server");
+    const session = store.verifySession(getCookie(COOKIE));
+    if (!session || session.rol !== "docente") {
+      return { ok: false, error: "No autorizado. Se requiere sesión docente." };
+    }
+    try {
+      const res = store.saveAttendance(data.fecha, data.registros, data.tema);
+      return { ok: true, dia: res };
+    } catch (e: any) {
+      return { ok: false, error: e.message || "Error al guardar asistencia." };
+    }
+  });
+
+/* ---------- Calificación Manual / Observaciones (Docente) ---------- */
+
+export const asignarCalificacionDocente = createServerFn({ method: "POST" })
+  .inputValidator(
+    (d: {
+      usuario: string;
+      actividadId: string;
+      nota: number;
+      observacion?: string;
+    }) => d,
+  )
+  .handler(async ({ data }) => {
+    const store = await import("./server/store");
+    const { getCookie } = await import("@tanstack/react-start/server");
+    const session = store.verifySession(getCookie(COOKIE));
+    if (!session || session.rol !== "docente") {
+      return { ok: false, error: "No autorizado. Se requiere sesión docente." };
+    }
+    try {
+      const res = store.setActivityGrade(
+        data.usuario,
+        data.actividadId,
+        data.nota,
+        data.observacion,
+      );
+      return { ok: true, registro: res };
+    } catch (e: any) {
+      return { ok: false, error: e.message || "Error al asignar calificación." };
+    }
+  });
+

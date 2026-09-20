@@ -115,6 +115,12 @@ function LoginPage() {
         <p className="mt-4 text-center text-sm text-muted-foreground">
           ¿No tienes usuario? Pídeselo a tu profesor(a). 🦉
         </p>
+
+        <div className="mt-6 pt-4 border-t border-border/60 text-center text-xs text-muted-foreground">
+          <span className="inline-flex items-center gap-1.5 font-semibold text-institutional">
+            <span>👩‍🏫</span> Acceso Docente: Usa tu usuario y clave para ingresar al Panel de Control.
+          </span>
+        </div>
       </section>
     </main>
   );
